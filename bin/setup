@@ -694,6 +694,7 @@ _write_commit_message_command
 _write_command "grill-me"
 _write_command "fix"
 _write_command "handoff"
+_write_command "glab-mr"
 
 log::box "Installing Skills"
 _write_skill "diagnosing-bugs"
@@ -704,6 +705,7 @@ _write_skill "grilling"
 _write_skill "using-git-worktrees"
 _write_skill "verification-before-completion"
 _write_skill "writing-for-agents"
+_write_skill "glab"
 
 log::box "Installing Themes"
 _write_theme "github-dark-default"
