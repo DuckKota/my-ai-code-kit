@@ -13,6 +13,13 @@ Icon*
 *~
 *.orig
 .opencode/
+.omp/
+
+# Python
+__pycache__/
+*.pyc
+.mypy_cache/
+.pytest_cache/
 
 # Temp files
 tmp/

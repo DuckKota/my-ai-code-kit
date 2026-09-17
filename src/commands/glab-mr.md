@@ -8,26 +8,13 @@ Draft and optionally publish a GitLab merge request for the current branch.
 
 This command runs after commits already exist.
 
-You must:
-
-1. Analyze committed changes on the current branch.
-2. Use the latest commit message as context.
-3. Extract the issue number and fetch issue details with `glab`.
-4. Detect whether a merge request already exists for the branch.
-5. Draft exactly one merge request title and one merge request description.
-6. Present the draft to the user and request explicit approval before any
-   `glab mr create` or `glab mr update` command is executed.
-7. If the user approves, execute the appropriate `glab` command.
-8. If the user does not approve, provide the exact `glab` command without
-   executing it.
-
-You must never:
-
-- publish a merge request without explicit user approval
-- guess or invent an issue number
-- ignore required merge request template content when a template is in use
-- overwrite an existing merge request blindly when the target merge request is
-  ambiguous
+Analyze the committed changes on the current branch, extract the issue number,
+and draft exactly one merge request title and one merge request description.
+Present the draft and request explicit approval before any `glab mr create` or
+`glab mr update` runs; if the user does not approve, return the exact command
+without executing it. The Execution Workflow below is the authoritative
+procedure and carries every guardrail (approval, issue number, template,
+ambiguity) in its steps.
 
 ---
 
@@ -164,12 +151,6 @@ If an issue number still cannot be found:
 STOP.
 
 Ask the user for the issue number.
-
-Never:
-
-- guess an issue number
-- invent an issue number
-- proceed without issue context
 
 ---
 
@@ -312,11 +293,11 @@ The description must:
   when in update mode unless the user clearly wants replacement
 - remain readable in GitLab markdown
 
-Avoid:
+Keep the description:
 
-- raw diff dumps
-- boilerplate that says nothing specific
-- diagrams that are more complex than the change they explain
+- focused: summarize the change rather than dumping the raw diff
+- specific: say what is true only of this change, never boilerplate
+- proportionate: any diagram stays simpler than the change it explains
 
 ### Diagram policy
 
@@ -517,15 +498,3 @@ Execution failed: <brief exact failure>
 
 Return no explanation, analysis, or additional commentary outside the required
 sections.
-
----
-
-# Writing Priorities
-
-When tradeoffs appear, prefer these outcomes in order:
-
-1. preserve user control
-2. preserve reviewed template structure
-3. preserve correct existing human-written MR context in update mode
-4. prefer reviewer clarity over exhaustiveness
-5. prefer bullets over diagrams unless the diagram is clearly better

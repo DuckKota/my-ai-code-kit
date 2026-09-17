@@ -1,6 +1,6 @@
 ---
 name: glab
-description: Decision guide for using the GitLab CLI (`glab`). Use when work needs GitLab command-line access, preflight checks, repository targeting, or direct GitLab API calls.
+description: Decision guide for the GitLab CLI (`glab`): merge requests, issues, CI/CD, direct `glab api` calls, and repository targeting. Use when GitLab work needs the command line, or when `glab` install, auth, or targeting fails.
 ---
 
 # GitLab CLI (glab) Skill
@@ -41,9 +41,7 @@ Use `glab` for GitLab work from terminal. Treat `glab --help` as source of truth
 - Use `--output=json` when user needs scripting or machine-readable output.
 - Use `--web` when user wants browser handoff instead of terminal output.
 
-## High-Value Rules
-
-### `glab api`
+## glab api
 
 - Pagination parameters belong in request URL, not as standalone `glab api` flags.
 - Use `--paginate` to fetch successive pages.
@@ -54,19 +52,6 @@ Use `glab` for GitLab work from terminal. Treat `glab --help` as source of truth
 - Wrong pattern:
   ```bash
   glab api --per-page=100 projects/:id/jobs
-  ```
-
-### Repository Targeting
-
-- `glab` usually infers repository from current Git remote.
-- When that inference is wrong, use `-R owner/repo`.
-- For self-hosted GitLab, confirm host before assuming auth is broken.
-
-### Output for Automation
-
-- Prefer JSON output before parsing command results:
-  ```bash
-  glab mr list --output=json
   ```
 
 ## Progressive Disclosure
@@ -83,10 +68,4 @@ Use `glab` for GitLab work from terminal. Treat `glab --help` as source of truth
 - `not a git repository`: run from repository root or provide `-R owner/repo`
 - existing MR on source branch: inspect current branch MR before creating another
 
-## Notes
 
-- glab auto-detects repository context from Git remote
-- Most commands have `--web` flag to open in browser
-- Use `--output=json` for scripting and automation
-- Multiple GitLab accounts can be authenticated simultaneously
-- Commands respect Git configuration and current repository context

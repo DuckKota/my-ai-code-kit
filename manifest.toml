@@ -1,0 +1,212 @@
+# my-opencode-setup manifest — single source of truth.
+# Every command, skill, instruction, plugin, theme, and MCP server is declared
+# here. `oc.py` installs / syncs / updates / uninstalls from this file.
+#
+# provenance:
+#   original — mine, no upstream; `setup vendor` skips it
+#   vendor   — stolen pristine; `setup vendor` overwrites from upstream
+#   fork     — stolen + customized; `setup vendor` 3-way-merges upstream changes
+#
+# operation:
+#   symlink       — file/dir artifact symlinked into the config dir
+#   config-merge  — config entry merged into a JSON file (opencode.json, tui.json)
+#   text-insert   — text block inserted into a target file (prepend/append)
+
+version = 1
+
+[config]
+# Optional: override the opencode config dir. If unset, resolved via
+# `opencode debug paths`. `OC_CONFIG_DIR` env var takes precedence.
+# default_config_dir = "~/.config/opencode"
+
+# ----------------------------------------------------------------- commands
+[[artifacts]]
+name = "commit-message"
+operation = "symlink"
+type = "command"
+provenance = "original"
+
+[[artifacts.entries]]
+src = "src/commands/commit-message.md"
+target = "commands/commit-message.md"
+# The installed command file must reference the installed validator script's
+# absolute path; the placeholder is substituted at install time.
+replace = { "<VALIDATE_COMMIT_SCRIPT>" = "{config_dir}/scripts/verify-commit" }
+
+[[artifacts.entries]]
+src = "src/commands/verify-commit"
+target = "scripts/verify-commit"
+
+[[artifacts]]
+name = "fix"
+operation = "symlink"
+type = "command"
+provenance = "original"
+src = "src/commands/fix.md"
+target = "commands/fix.md"
+
+[[artifacts]]
+name = "glab-mr"
+operation = "symlink"
+type = "command"
+provenance = "original"
+src = "src/commands/glab-mr.md"
+target = "commands/glab-mr.md"
+
+[[artifacts]]
+name = "grill-me"
+operation = "symlink"
+type = "command"
+provenance = "fork"
+source_repo = "https://github.com/mattpocock/skills"
+source_path = "skills/productivity/grill-me/SKILL.md"
+source_sha = "959a8e9f1edc3adbe2f7e3054bb6fbefa6696260"
+src = "src/commands/grill-me.md"
+target = "commands/grill-me.md"
+
+[[artifacts]]
+name = "handoff"
+operation = "symlink"
+type = "command"
+provenance = "vendor"
+source_repo = "https://github.com/mattpocock/skills"
+source_path = "skills/productivity/handoff/SKILL.md"
+source_sha = "959a8e9f1edc3adbe2f7e3054bb6fbefa6696260"
+src = "src/commands/handoff.md"
+target = "commands/handoff.md"
+
+# ------------------------------------------------------------------- skills
+[[artifacts]]
+name = "diagnosing-bugs"
+operation = "symlink"
+type = "skill"
+provenance = "vendor"
+source_repo = "https://github.com/mattpocock/skills"
+source_path = "skills/engineering/diagnosing-bugs"
+source_sha = "959a8e9f1edc3adbe2f7e3054bb6fbefa6696260"
+src = "src/skills/diagnosing-bugs"
+target = "skills/diagnosing-bugs"
+
+[[artifacts]]
+name = "codebase-design"
+operation = "symlink"
+type = "skill"
+provenance = "vendor"
+source_repo = "https://github.com/mattpocock/skills"
+source_path = "skills/engineering/codebase-design"
+source_sha = "959a8e9f1edc3adbe2f7e3054bb6fbefa6696260"
+src = "src/skills/codebase-design"
+target = "skills/codebase-design"
+
+[[artifacts]]
+name = "domain-modeling"
+operation = "symlink"
+type = "skill"
+provenance = "vendor"
+source_repo = "https://github.com/mattpocock/skills"
+source_path = "skills/engineering/domain-modeling"
+source_sha = "959a8e9f1edc3adbe2f7e3054bb6fbefa6696260"
+src = "src/skills/domain-modeling"
+target = "skills/domain-modeling"
+
+[[artifacts]]
+name = "improve-codebase-architecture"
+operation = "symlink"
+type = "skill"
+provenance = "vendor"
+source_repo = "https://github.com/mattpocock/skills"
+source_path = "skills/engineering/improve-codebase-architecture"
+source_sha = "959a8e9f1edc3adbe2f7e3054bb6fbefa6696260"
+src = "src/skills/improve-codebase-architecture"
+target = "skills/improve-codebase-architecture"
+
+[[artifacts]]
+name = "grilling"
+operation = "symlink"
+type = "skill"
+provenance = "vendor"
+source_repo = "https://github.com/mattpocock/skills"
+source_path = "skills/productivity/grilling"
+source_sha = "959a8e9f1edc3adbe2f7e3054bb6fbefa6696260"
+src = "src/skills/grilling"
+target = "skills/grilling"
+
+[[artifacts]]
+name = "writing-for-agents"
+operation = "symlink"
+type = "skill"
+provenance = "vendor"
+source_repo = "https://github.com/mattpocock/skills"
+source_path = "skills/productivity/writing-for-agents"
+source_sha = "959a8e9f1edc3adbe2f7e3054bb6fbefa6696260"
+src = "src/skills/writing-for-agents"
+target = "skills/writing-for-agents"
+
+[[artifacts]]
+name = "using-git-worktrees"
+operation = "symlink"
+type = "skill"
+provenance = "vendor"
+source_repo = "https://github.com/obra/superpowers"
+source_path = "skills/using-git-worktrees"
+source_sha = "b36e0829c6d0140e93cfef2ca599b1b07d4a7797"
+src = "src/skills/using-git-worktrees"
+target = "skills/using-git-worktrees"
+
+[[artifacts]]
+name = "verification-before-completion"
+operation = "symlink"
+type = "skill"
+provenance = "vendor"
+source_repo = "https://github.com/obra/superpowers"
+source_path = "skills/verification-before-completion"
+source_sha = "b36e0829c6d0140e93cfef2ca599b1b07d4a7797"
+src = "src/skills/verification-before-completion"
+target = "skills/verification-before-completion"
+
+[[artifacts]]
+name = "glab"
+operation = "symlink"
+type = "skill"
+provenance = "original"
+src = "src/skills/glab"
+target = "skills/glab"
+
+# ------------------------------------------------------------ instructions
+[[artifacts]]
+name = "caveman"
+operation = "text-insert"
+type = "instruction"
+provenance = "original"
+src = "src/instructions/caveman.md"
+target = "AGENTS.md"
+mode = "prepend"
+anchor = "<!-- caveman-begin -->"
+
+[[artifacts]]
+name = "file-edit-limits"
+operation = "text-insert"
+type = "instruction"
+provenance = "original"
+src = "src/instructions/file-edit-limits.md"
+target = "AGENTS.md"
+mode = "append"
+anchor = "<!-- file-edit-size-limits:start -->"
+
+# ------------------------------------------------------------------- themes
+[[artifacts]]
+name = "github-dark-default"
+operation = "symlink"
+type = "theme"
+provenance = "original"
+src = "src/themes/github-dark-default.json"
+target = "themes/github-dark-default.json"
+
+[[artifacts]]
+name = "theme-default"
+operation = "config-merge"
+type = "theme"
+provenance = "original"
+config_file = "tui.json"
+config_path = "theme"
+value = '"github-dark-default"'

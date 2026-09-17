@@ -1,11 +1,10 @@
 <!-- file-edit-size-limits:start -->
-## Critical Rule: Chunked Assembly for Large File Operations
+## Chunked Assembly for Large File Operations
 
-To prevent output token truncation, broken JSON payloads, and tool failure:
+Keep each tool call within output limits to avoid token truncation, broken JSON payloads, and tool failure:
 
-- **Strict Payload Ceiling:** NEVER generate or replace more than **300 lines of content** in a single `write` or `edit` tool call.
-- **Mandatory Chunked Assembly:** Whenever creating or significantly expanding a file expected to exceed 300 lines, you MUST construct it in steps:
-  1. **Initialize:** Use `write` to establish the basic file outline, high-level structure, exports, or boilerplate.
-  2. **Populate:** Use sequential, smaller `edit` calls to populate distinct sections, blocks, or content groups step-by-step.
-- Do not attempt to write massive monolithic files in a single turn. 
+- **300-line ceiling:** generate or replace at most **300 lines of content** per `write` or `edit` call.
+- **Chunk large files in steps:** for a file expected to exceed 300 lines, assemble it incrementally:
+  1. **Initialize:** use `write` to lay down the file outline, high-level structure, exports, or boilerplate.
+  2. **Populate:** add distinct sections, blocks, or content groups with sequential `edit` calls.
 <!-- file-edit-size-limits:stop -->

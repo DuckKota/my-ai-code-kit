@@ -13,10 +13,6 @@ You must:
 3. Validate the generated commit message using the repository's commit validation script.
 4. Provide the exact `git commit` command for the user.
 
-You must never:
-
-- inspect unstaged changes as a substitute for staged changes
-
 ---
 
 # Execution Workflow
@@ -41,6 +37,8 @@ Tell the user:
 - they should stage changes first (example: `git add .`)
 
 Do not continue.
+
+**Done when** `git diff --cached` shows staged changes.
 
 ---
 
@@ -70,11 +68,11 @@ STOP.
 
 Ask the user for the issue number.
 
-Never:
+Use only an issue number found in the branch name or confirmed by the
+user, and carry it into the footer.
 
-- guess an issue number
-- invent an issue number
-- omit the issue footer
+**Done when** you hold a real issue number from the branch name or the
+user.
 
 ---
 
@@ -123,7 +121,7 @@ Rules:
 - lowercase
 - kebab-case
 - omit for global or cross-cutting changes
-- never invent a scope merely because a directory exists
+- name a real component, not a bare directory
 
 ---
 
@@ -151,10 +149,17 @@ Focus on explaining:
 - notable implementation decisions
 - impact on users or developers
 
-Avoid simply restating the summary or describing obvious code edits that
-are already visible in the diff.
+Say what the diff does not: the reason, the decisions, and the impact —
+not a re-read of the changed lines.
 
 Wrap lines at 72 characters.
+
+When the change bundles two or more independent changes, enumerate each as
+its own bullet. A change is independent when splitting it off would leave a
+meaningless commit subject: two files of one fix are one change; two fixes
+in one file are two. Each bullet is an imperative sentence, lowercase start,
+no trailing period, wrapped at 72 characters. The subject still names the
+dominant change; the body enumerates the rest.
 
 ---
 
@@ -188,6 +193,8 @@ Implements #456
 Closes #789
 ```
 
+**Done when** type, scope, summary, body, and footer are all decided.
+
 ---
 
 ## Step 4: Validate the commit message
@@ -217,7 +224,7 @@ If validation fails:
 
 Repeat until validation succeeds.
 
-Do not return an invalid commit message.
+**Done when** the validator accepts the message.
 
 ---
 
@@ -226,11 +233,14 @@ Do not return an invalid commit message.
 Before responding, validate each component against the rules above:
 
 - Subject ≤ 72 chars, imperative, lowercase start, no period?
+- Two or more independent changes → body enumerates them as bullets?
 - Body explains *why* not *what* (diff already shows what)?
 - Footer keyword matches type (Fixes/Implements/Closes)?
 - Issue number present and real?
 
 If any rule is violated: fix it, then re-run validation before continuing.
+
+**Done when** every component passes and validation succeeds.
 
 ---
 

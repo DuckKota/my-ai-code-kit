@@ -1,0 +1,145 @@
+# MAINTAINING.md — tribal knowledge & provenance ledger
+
+This document is the human record of *why* this setup exists and how it stays
+current. It complements `openspec/` (which records the *design rationale* of
+the setup tool itself). Here we record the *content* decisions: what each
+artifact is, where it came from, what we customized on top, and how to merge
+upstream changes back in.
+
+## Usage
+
+| Command | What it does |
+| --- | --- |
+| `setup install` | install managed files; remove stale symlinks; init OpenSpec + codebase-memory-mcp in a git repo (prompts first) |
+| `setup install --no-init` | config farm only, skip per-project tool init |
+| `setup uninstall` | tear down managed symlinks, keep your own config |
+
+`install` prompts before removing stale symlinks (`--yes` skips the prompt,
+`--force` overwrites conflicting files). `vendor` prompts before pulling
+upstream changes (`--yes` skips). `uninstall` does **not** prompt: it only
+removes what the tool installed (managed symlinks, exact-content copies, and
+matched text blocks), so it never touches your own config. In a non-interactive
+shell the prompts default to **no**.
+
+**Keep up to date** — pull the latest release, then re-apply:
+
+```bash
+git pull
+./bin/setup install --force
+```
+
+The machine-readable source of truth is `manifest.toml`. Every artifact in
+that file has a `provenance` of `original`, `vendor`, or `fork`:
+
+- **original** — ours, no upstream. `setup vendor` skips.
+- **vendor** — stolen, pristine, untouched. `setup vendor` overwrites from upstream.
+- **fork** — stolen + customized on top. `setup vendor` 3-way merges + reviews.
+
+---
+
+## Upstream index
+
+| Upstream repo | What we take | Relationship |
+| --- | --- | --- |
+| [mattpocock/skills](https://github.com/mattpocock/skills) | **Commands:**<br>`/grill-me`, `/handoff`<br><br>**Skills:**<br>`diagnosing-bugs`, `codebase-design`, `domain-modeling`, `improve-codebase-architecture`, `grilling`, `writing-for-agents` | vendor + fork (grill-me) |
+| [obra/superpowers](https://github.com/obra/superpowers) | **Skills:**<br>`using-git-worktrees`, `verification-before-completion` | vendor |
+
+---
+
+## How to pull upstream changes
+
+```bash
+./bin/setup vendor   # report drift, then pull changes (prompts first)
+```
+
+`vendor` alone is enough: every vendored artifact is a plain symlink into
+`src/`, so pulling updates propagates to the live config automatically. No
+reinstall needed.
+
+The non-symlink artifacts (`commit-message`'s substituted copy, the `caveman`
+/ `file-edit-limits` text-inserts into AGENTS.md, `theme-default`'s
+config-merge) are all `original` and never vendored. If you edit one by hand,
+a plain `install` won't refresh it — use `--force`, or uninstall then install.
+
+Behavior by provenance:
+
+- **original** — skipped.
+- **vendor** — overwritten from upstream HEAD, `source_sha` bumped.
+- **fork** — 3-way merge (`git merge-file`): base = upstream at pinned
+  `source_sha`, ours = our file, theirs = upstream HEAD.
+  - Clean merge → applied, `source_sha` bumped.
+  - Conflict → conflict markers written into the file, `source_sha` **not**
+    bumped. Resolve markers, then re-run `setup vendor` to finalize.
+  - First fork update (no `source_sha` yet) → **pins** upstream as base and
+    leaves our file untouched. This is deliberate: it never clobbers
+    customizations on first run.
+
+Rule (hard): after any successful update, `source_sha` must be bumped, or the
+merge base drifts and future merges lie.
+
+---
+
+## Per-artifact notes
+
+### Commands
+
+#### grill-me — `fork` (mattpocock)
+Customized: our `/grill-me` is a thin command that delegates to the `/grilling`
+skill, rather than embedding the full interview logic. See `grilling` below.
+Reason: keep the command as a stable entry point while the interview lives in
+the skill it delegates to. Upstream wording changes should merge into the
+skill; our thin wrapper should survive.
+
+#### handoff — `vendor` (mattpocock)
+Stolen verbatim; used as `/handoff`. No local changes.
+
+#### commit-message — `original`
+Our `/commit-message` command + `verify-commit` validation script. The command
+references the installed script path at install time.
+
+#### fix — `original`
+Our `/fix` command (renamed from `/debug`).
+
+#### glab-mr — `original`
+Our `/glab-mr` command for creating merge requests.
+
+### Skills
+
+#### grilling — `vendor` (mattpocock)
+The interview engine `/grill-me` invokes. When upstream changes wording, the
+merge should carry it in.
+
+#### diagnosing-bugs / codebase-design / domain-modeling / improve-codebase-architecture / writing-for-agents — `vendor` (mattpocock)
+Pristine copies. Nothing local to protect; overwrite freely.
+
+#### using-git-worktrees / verification-before-completion — `vendor` (obra/superpowers)
+Pristine copies.
+
+#### glab — `original`
+Our own skill for working with GitLab via `glab` CLI (mirrors the `glab-mr`
+command). No upstream.
+
+### Themes & instructions
+
+#### caveman — `original`
+The terse "smart caveman" speaking rules, prepended to the global `AGENTS.md`.
+
+#### file-edit-limits — `original`
+The chunked-assembly rule for large file writes, appended to `AGENTS.md`.
+
+#### github-dark-default — `original`
+Our default theme; also sets `theme` in `tui.json`.
+
+### Per-project
+
+#### OpenSpec — `original`
+Per-project, set up by `ocinit` (not the manifest — see `setup install`
+running inside a git repo). `ocinit.py` runs `openspec init --tools opencode`
+in the repo root. Idempotent.
+
+#### codebase-memory-reminder / codebase-memory-mcp — `original`
+Both are per-project, set up by `ocinit` (not the manifest — see
+`setup install` running inside a git repo). `ocinit.py` prepends the
+codebase-memory instructions to `AGENTS.md`, copies
+`CodebaseMemoryReminder.ts` into `.opencode/plugins`, and merges the MCP
+server into `.opencode/opencode.json`, then sets `auto_index` / `auto_watch`.

@@ -1,6 +1,6 @@
 ---
 name: grill-me
-description: A relentless interview to sharpen a plan or design
+description: Grill the user relentlessly to sharpen a plan, decision, or idea
 ---
 
 Run a `/grilling` session.
