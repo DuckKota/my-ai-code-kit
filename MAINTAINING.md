@@ -127,8 +127,10 @@ The terse "smart caveman" speaking rules, prepended to the global `AGENTS.md`.
 #### file-edit-limits — `original`
 The chunked-assembly rule for large file writes, appended to `AGENTS.md`.
 
-#### github-dark-default — `original`
-Our default theme; also sets `theme` in `tui.json`.
+#### oc-github-dark — `original`
+Our default theme; also sets `theme` in `tui.json`. The Oh My Pi equivalent
+is `omp-github-dark` (installed as `themes/github-dark.json`; selected via a
+`config-merge` into `config.yml`).
 
 ### Per-project
 

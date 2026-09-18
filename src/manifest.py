@@ -6,8 +6,12 @@ from __future__ import annotations
 import tomllib
 from pathlib import Path
 
+import config
+
 OPERATIONS = ("symlink", "config-merge", "text-insert")
 PROVENANCES = ("original", "vendor", "fork")
+# Version 2 requires every artifact to declare an explicit `agents` list.
+MIN_VERSION = 2
 
 
 class ManifestError(Exception):
@@ -61,6 +65,13 @@ def validate(data: dict) -> None:
     if "version" not in data:
         raise ManifestError("manifest missing `version`")
 
+    if data["version"] != MIN_VERSION:
+        version = data["version"]
+        raise ManifestError(
+            f"unsupported manifest version {version!r}; "
+            f"expected {MIN_VERSION}"
+        )
+
     if not isinstance(data["artifacts"], list) or not all(
         isinstance(artifact, dict) for artifact in data["artifacts"]
     ):
@@ -71,6 +82,17 @@ def validate(data: dict) -> None:
 
         if not name:
             raise ManifestError("artifact missing `name`")
+
+        agents = artifact.get("agents")
+        valid_agents = ", ".join(config.AGENTS)
+        if (
+            not isinstance(agents, list)
+            or not agents
+            or not all(agent in config.AGENTS for agent in agents)
+        ):
+            raise ManifestError(
+                f"{name}: must declare a non-empty `agents` list of {valid_agents}"
+            )
 
         operation = artifact.get("operation")
         if operation not in OPERATIONS:

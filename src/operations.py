@@ -15,7 +15,7 @@ def _substituted_content(root: Path, entry: dict, config_dir: Path) -> str:
     Args:
         root: The repository root containing the source file.
         entry: The symlink entry declaring `src` and `replace`.
-        config_dir: The opencode config directory (resolves `{config_dir}`).
+        config_dir: The agent config directory (resolves `{config_dir}`).
 
     Returns:
         The source file content with each placeholder replaced.
@@ -26,6 +26,32 @@ def _substituted_content(root: Path, entry: dict, config_dir: Path) -> str:
             placeholder, value.replace("{config_dir}", str(config_dir))
         )
     return content
+
+
+def _is_managed_copy(entry: dict, config_dir: Path, content: str) -> bool:
+    """
+    Return True if content is a tool-written substituted copy.
+
+    The resolved substitute values embed the config dir path — the tool's
+    signature. A user's own file at the same target would not contain it.
+    Used to tear down copies whose source drifted since install and no longer
+    byte-match today's render.
+
+    Args:
+        entry: The symlink entry declaring `src` and `replace`.
+        config_dir: The agent config directory.
+        content: The on-disk file content.
+
+    Returns:
+        True when every resolved substitute value appears in content.
+    """
+    replace = entry.get("replace")
+    if not replace:
+        return False
+    return all(
+        value.replace("{config_dir}", str(config_dir)) in content
+        for value in replace.values()
+    )
 
 
 def symlink(
@@ -39,7 +65,7 @@ def symlink(
 
     Args:
         root: The repository root containing the managed files.
-        config_dir: The opencode config directory to link into.
+        config_dir: The agent config directory to link into.
         artifact: The manifest artifact describing the symlink.
         force: Overwrite an existing conflicting file or symlink.
     """
@@ -118,7 +144,7 @@ def text_insert(
 
     Args:
         root: The repository root containing the source text.
-        config_dir: The opencode config directory containing the target.
+        config_dir: The agent config directory containing the target.
         artifact: The manifest artifact describing the insertion.
     """
     content = (root / artifact["src"]).read_text(encoding="utf-8").strip()
@@ -149,13 +175,16 @@ def _text_remove(
     """
     Remove a previously inserted text block from its target file.
 
-    Only removes the block when it is still byte-identical to what the tool
-    wrote (the source content, delimited by its own start/end markers). If the
-    user edited the block, it is left in place.
+    Removes the whole marker-delimited region: from the block's start anchor
+    to its closing comment. Locating by markers rather than by matching the
+    current source byte-for-byte means a block whose interior drifted — e.g.
+    because the source instructions were edited after install — is still torn
+    down. A hand-edited interior is removed too: it sits inside the tool's own
+    begin/end markers, which mark that region as tool-managed.
 
     Args:
         root: The repository root containing the source text.
-        config_dir: The opencode config directory containing the target.
+        config_dir: The agent config directory containing the target.
         artifact: The manifest artifact describing the insertion.
     """
     content = (root / artifact["src"]).read_text(encoding="utf-8").strip()
@@ -163,14 +192,111 @@ def _text_remove(
     if not target_path.exists():
         return
     existing = target_path.read_text(encoding="utf-8")
-    start = existing.find(content)
+    start_marker = artifact["anchor"]
+    start = existing.find(start_marker)
     if start == -1:
-        return  # not inserted, or the user edited the block
-    end = start + len(content)
+        return  # never inserted
+    # Closing marker: the source block's trailing comment line.
+    end_marker = next(
+        (
+            line.strip()
+            for line in reversed(content.splitlines())
+            if line.strip().startswith("<!--")
+        ),
+        start_marker,
+    )
+    end = existing.find(end_marker, start + len(start_marker))
+    if end == -1:
+        return  # no closing marker; leave it rather than mangle the file
+    end += len(end_marker)
     new_content = (existing[:start] + existing[end:]).strip("\n") + "\n"
     if new_content == existing:
         return
     target_path.write_text(new_content, encoding="utf-8")
+
+
+def _yaml_scalar(value) -> str:
+    """Render a scalar as a YAML value, quoting only when necessary."""
+    if value is None:
+        return "null"
+    if value is True:
+        return "true"
+    if value is False:
+        return "false"
+    if isinstance(value, (int, float)):
+        return str(value)
+    # Strings that are plain YAML scalars can stay bare; anything ambiguous
+    # (colons, quotes, leading/trailing space, or a boolean-looking word) is
+    # double-quoted via JSON, which is valid YAML.
+    s = str(value)
+    if (
+        s
+        and s == s.strip()
+        and not any(c in s for c in ":{}#&*!|>%@`\"'")
+        and s.lower() not in ("true", "false", "null", "yes", "no", "on", "off")
+    ):
+        return s
+    return json.dumps(s)
+
+
+def _indent(line: str) -> int:
+    """Count leading spaces of a line (YAML block indentation)."""
+    return len(line) - len(line.lstrip(" "))
+
+
+def _yaml_block_end(lines: list[str], start: int, parent_indent: int) -> int:
+    """Index after a mapping's children: first line at or above parent indent."""
+    i = start
+    while i < len(lines):
+        line = lines[i]
+        if line.strip() and not line.lstrip().startswith("#") and _indent(line) <= parent_indent:
+            break
+        i += 1
+    return i
+
+
+def _yaml_find_key(lines: list[str], start: int, end: int, indent: int, key: str) -> int:
+    """Index of the `key:` line at the given indent within [start, end), or -1."""
+    for i in range(start, end):
+        line = lines[i]
+        if line.strip() and not line.lstrip().startswith("#") and _indent(line) == indent:
+            if line.lstrip().startswith(key + ":"):
+                return i
+    return -1
+
+
+def _set_yaml_path(text: str, path: str, value) -> str:
+    """Return `text` with the dotted mapping `path` set to `value`.
+
+    Dependency-free line edit: only the target key's line(s) change, so
+    unrelated lines, comments, and formatting are preserved. Supports mapping
+    keys only (no list indices), which covers every declared config path.
+    """
+    segments = path.split(".")
+    lines = text.split("\n") if text.strip() else []
+    start, end, indent = 0, len(lines), 0
+
+    for idx, seg in enumerate(segments):
+        last = idx == len(segments) - 1
+        key_line = _yaml_find_key(lines, start, end, indent, seg)
+        if key_line == -1:
+            # Insert the remaining path (and value on the leaf) at block end.
+            new_lines = []
+            for j, s in enumerate(segments[idx:]):
+                pad = " " * (indent + j * 2)
+                suffix = f" {_yaml_scalar(value)}" if j == len(segments) - idx - 1 else ""
+                new_lines.append(f"{pad}{s}:{suffix}")
+            lines[end:end] = new_lines
+            return "\n".join(lines).rstrip("\n") + "\n"
+        if last:
+            stripped = lines[key_line].lstrip()
+            pad = lines[key_line][: len(lines[key_line]) - len(stripped)]
+            lines[key_line] = f"{pad}{seg}: {_yaml_scalar(value)}"
+            return "\n".join(lines).rstrip("\n") + "\n"
+        start = key_line + 1
+        end = _yaml_block_end(lines, start, indent)
+        indent += 2
+    return "\n".join(lines).rstrip("\n") + "\n"
 
 
 def config_merge(
@@ -180,10 +306,10 @@ def config_merge(
     mcp_bin: str = "",
 ) -> None:
     """
-    Merge a JSON config entry into a target config file.
+    Merge a JSON/YAML config entry into a target config file.
 
     Args:
-        config_dir: The opencode config directory containing the target.
+        config_dir: The agent config directory containing the target.
         artifact: The manifest artifact describing the merge.
         mcp_bin: The codebase-memory-mcp binary path to substitute.
     """
@@ -197,6 +323,15 @@ def config_merge(
     except json.JSONDecodeError:
         # Value isn't JSON — store it as a raw string instead.
         value = raw_value
+
+    if target_path.suffix in (".yml", ".yaml"):
+        text = target_path.read_text(encoding="utf-8") if target_path.exists() else ""
+        merged = _set_yaml_path(text, artifact["config_path"], value)
+        if merged == text:
+            return  # idempotent: already merged
+        target_path.write_text(merged, encoding="utf-8")
+        print(f"  merged {target_path}")
+        return
 
     data: dict = {}
     if target_path.exists():
@@ -238,6 +373,7 @@ def install(
     root: Path,
     config_dir: Path,
     force: bool = False,
+    agent: str = "",
 ) -> None:
     """
     Bring the managed config farm up, idempotently.
@@ -245,12 +381,15 @@ def install(
     Args:
         manifest: The parsed manifest dictionary.
         root: The repository root.
-        config_dir: The opencode config directory.
+        config_dir: The agent config directory.
         force: Overwrite conflicting files.
+        agent: Only install artifacts that declare this agent; empty installs all.
     """
     mcp_bin = shutil.which("codebase-memory-mcp") or "codebase-memory-mcp"
     config_dir.mkdir(parents=True, exist_ok=True)
     for artifact in manifest["artifacts"]:
+        if agent and agent not in artifact.get("agents", []):
+            continue
         operation = artifact["operation"]
         if operation == "symlink":
             symlink(root, config_dir, artifact, force)
@@ -262,12 +401,13 @@ def install(
             raise ValueError(f"unknown operation {operation}")
 
 
-def expected_symlink_targets(manifest: dict) -> set[str]:
+def expected_symlink_targets(manifest: dict, agent: str = "") -> set[str]:
     """
     Return the set of managed symlink targets declared in the manifest.
 
     Args:
         manifest: The parsed manifest dictionary.
+        agent: Only count artifacts declaring this agent; empty counts all.
 
     Returns:
         The set of relative symlink target paths.
@@ -275,6 +415,8 @@ def expected_symlink_targets(manifest: dict) -> set[str]:
     targets: set[str] = set()
 
     for artifact in manifest["artifacts"]:
+        if agent and agent not in artifact.get("agents", []):
+            continue
         if artifact["operation"] != "symlink":
             continue
         entries = artifact.get("entries") or [{"target": artifact["target"]}]
@@ -292,7 +434,7 @@ def managed_symlinks(
     Yield managed symlinks under config_dir that point into root/src.
 
     Args:
-        config_dir: The opencode config directory to scan.
+        config_dir: The agent config directory to scan.
         root: The repository root.
 
     Yields:
@@ -317,6 +459,8 @@ def sync(
     config_dir: Path,
     force: bool = False,
     prune: bool = True,
+    *,
+    agent: str = "",
 ) -> None:
     """
     Install and remove stale managed symlinks.
@@ -324,11 +468,12 @@ def sync(
     Args:
         manifest: The parsed manifest dictionary.
         root: The repository root.
-        config_dir: The opencode config directory.
+        config_dir: The agent config directory.
         force: Overwrite conflicting files.
         prune: Remove stale managed symlinks (default True).
+        agent: Only operate on artifacts declaring this agent; empty = all.
     """
-    install(manifest, root, config_dir, force)
+    install(manifest, root, config_dir, force, agent)
 
     if not prune:
         return
@@ -338,7 +483,7 @@ def sync(
     # copies are NOT pruned here: once an artifact is dropped, its copy is
     # indistinguishable from a user file, so deleting it would be unsafe.
     # (uninstall() handles in-manifest teardown by content comparison.)
-    expected = expected_symlink_targets(manifest)
+    expected = expected_symlink_targets(manifest, agent)
     for path, relative_target in list(managed_symlinks(config_dir, root)):
         if relative_target not in expected:
             print(f"  removing stale managed symlink: {path}")
@@ -349,6 +494,7 @@ def uninstall(
     manifest: dict,
     root: Path,
     config_dir: Path,
+    agent: str = "",
 ) -> None:
     """
     Tear down managed symlinks, substituted copies, and inserted text blocks,
@@ -357,7 +503,8 @@ def uninstall(
     Args:
         manifest: The parsed manifest dictionary.
         root: The repository root.
-        config_dir: The opencode config directory.
+        config_dir: The agent config directory.
+        agent: Only operate on artifacts declaring this agent; empty = all.
     """
     for path, _ in list(managed_symlinks(config_dir, root)):
         print(f"  removing managed symlink: {path}")
@@ -369,6 +516,8 @@ def uninstall(
     # Only a file that still matches exactly the content the tool would write
     # is removed — a user's own file at the same path is kept.
     for artifact in manifest["artifacts"]:
+        if agent and agent not in artifact.get("agents", []):
+            continue
         if artifact["operation"] != "symlink":
             continue
         entries = artifact.get("entries") or [
@@ -378,14 +527,21 @@ def uninstall(
             target = config_dir / entry["target"]
             if target.is_symlink() or target.is_dir() or not target.exists():
                 continue
-            if target.read_text(encoding="utf-8") == _substituted_content(
-                root, entry, config_dir
+            content = target.read_text(encoding="utf-8")
+            # Remove a file that matches what the tool would write today, or
+            # that is recognizably a tool-written substituted copy (source
+            # may have drifted since install). A user's own file at the same
+            # path has neither property and is kept.
+            if content == _substituted_content(root, entry, config_dir) or (
+                _is_managed_copy(entry, config_dir, content)
             ):
                 print(f"  removing managed file: {target}")
                 target.unlink()
     # text-insert artifacts inject a block into a target file (e.g. AGENTS.md);
     # tear them down too, keeping any user-edited block in place.
     for artifact in manifest["artifacts"]:
+        if agent and agent not in artifact.get("agents", []):
+            continue
         if artifact["operation"] == "text-insert":
             target = config_dir / artifact["target"]
             if target.exists() and artifact["anchor"] in target.read_text(

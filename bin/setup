@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 
-# Bootstrap for my-opencode-setup. This is the only bash in the project.
-# All logic lives in python (src/oc.py). Must be run from a clone (see README).
+# Bootstrap for My AI Code Kit. This is the only bash in the project.
+# All logic lives in python (src/kit.py). Must be run from a clone (see README).
 set -euo pipefail
 
 # ROOT_DIR is the repository root; this script lives in ROOT_DIR/bin.
 BIN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
 ROOT_DIR="$(cd "$BIN_DIR/.." && pwd)"
 
-if [[ ! -f "$ROOT_DIR/manifest.toml" || ! -f "$ROOT_DIR/src/oc.py" ]]
+if [[ ! -f "$ROOT_DIR/manifest.toml" || ! -f "$ROOT_DIR/src/kit.py" ]]
 then
-    echo "error: bin/setup must be run from a clone of my-opencode-setup" >&2
+    echo "error: bin/setup must be run from a clone of My AI Code Kit" >&2
     echo "       see README for install instructions" >&2
     exit 1
 fi
@@ -33,4 +33,4 @@ then
     exit 1
 fi
 
-exec "$PYTHON" "$ROOT_DIR/src/oc.py" "$@"
+exec "$PYTHON" "$ROOT_DIR/src/kit.py" "$@"

@@ -1,4 +1,4 @@
-# my-opencode-setup manifest — single source of truth.
+# My AI Code Kit manifest — single source of truth.
 # Every command, skill, instruction, plugin, theme, and MCP server is declared
 # here. `oc.py` installs / syncs / updates / uninstalls from this file.
 #
@@ -12,7 +12,7 @@
 #   config-merge  — config entry merged into a JSON file (opencode.json, tui.json)
 #   text-insert   — text block inserted into a target file (prepend/append)
 
-version = 1
+version = 2
 
 [config]
 # Optional: override the opencode config dir. If unset, resolved via
@@ -22,6 +22,7 @@ version = 1
 # ----------------------------------------------------------------- commands
 [[artifacts]]
 name = "commit-message"
+agents = ["opencode", "omp"]
 operation = "symlink"
 type = "command"
 provenance = "original"
@@ -39,6 +40,7 @@ target = "scripts/verify-commit"
 
 [[artifacts]]
 name = "fix"
+agents = ["opencode", "omp"]
 operation = "symlink"
 type = "command"
 provenance = "original"
@@ -47,6 +49,7 @@ target = "commands/fix.md"
 
 [[artifacts]]
 name = "glab-mr"
+agents = ["opencode", "omp"]
 operation = "symlink"
 type = "command"
 provenance = "original"
@@ -55,95 +58,104 @@ target = "commands/glab-mr.md"
 
 [[artifacts]]
 name = "grill-me"
+agents = ["opencode", "omp"]
 operation = "symlink"
 type = "command"
 provenance = "fork"
 source_repo = "https://github.com/mattpocock/skills"
 source_path = "skills/productivity/grill-me/SKILL.md"
-source_sha = "959a8e9f1edc3adbe2f7e3054bb6fbefa6696260"
+source_sha = "74ca5fe077456a0b3b2f5310cf9430999fd0b5fd"
 src = "src/commands/grill-me.md"
 target = "commands/grill-me.md"
 
 [[artifacts]]
 name = "handoff"
+agents = ["opencode", "omp"]
 operation = "symlink"
 type = "command"
 provenance = "vendor"
 source_repo = "https://github.com/mattpocock/skills"
 source_path = "skills/productivity/handoff/SKILL.md"
-source_sha = "959a8e9f1edc3adbe2f7e3054bb6fbefa6696260"
+source_sha = "74ca5fe077456a0b3b2f5310cf9430999fd0b5fd"
 src = "src/commands/handoff.md"
 target = "commands/handoff.md"
 
 # ------------------------------------------------------------------- skills
 [[artifacts]]
 name = "diagnosing-bugs"
+agents = ["opencode", "omp"]
 operation = "symlink"
 type = "skill"
 provenance = "vendor"
 source_repo = "https://github.com/mattpocock/skills"
 source_path = "skills/engineering/diagnosing-bugs"
-source_sha = "959a8e9f1edc3adbe2f7e3054bb6fbefa6696260"
+source_sha = "74ca5fe077456a0b3b2f5310cf9430999fd0b5fd"
 src = "src/skills/diagnosing-bugs"
 target = "skills/diagnosing-bugs"
 
 [[artifacts]]
 name = "codebase-design"
+agents = ["opencode", "omp"]
 operation = "symlink"
 type = "skill"
 provenance = "vendor"
 source_repo = "https://github.com/mattpocock/skills"
 source_path = "skills/engineering/codebase-design"
-source_sha = "959a8e9f1edc3adbe2f7e3054bb6fbefa6696260"
+source_sha = "74ca5fe077456a0b3b2f5310cf9430999fd0b5fd"
 src = "src/skills/codebase-design"
 target = "skills/codebase-design"
 
 [[artifacts]]
 name = "domain-modeling"
+agents = ["opencode", "omp"]
 operation = "symlink"
 type = "skill"
 provenance = "vendor"
 source_repo = "https://github.com/mattpocock/skills"
 source_path = "skills/engineering/domain-modeling"
-source_sha = "959a8e9f1edc3adbe2f7e3054bb6fbefa6696260"
+source_sha = "74ca5fe077456a0b3b2f5310cf9430999fd0b5fd"
 src = "src/skills/domain-modeling"
 target = "skills/domain-modeling"
 
 [[artifacts]]
 name = "improve-codebase-architecture"
+agents = ["opencode", "omp"]
 operation = "symlink"
 type = "skill"
 provenance = "vendor"
 source_repo = "https://github.com/mattpocock/skills"
 source_path = "skills/engineering/improve-codebase-architecture"
-source_sha = "959a8e9f1edc3adbe2f7e3054bb6fbefa6696260"
+source_sha = "74ca5fe077456a0b3b2f5310cf9430999fd0b5fd"
 src = "src/skills/improve-codebase-architecture"
 target = "skills/improve-codebase-architecture"
 
 [[artifacts]]
 name = "grilling"
+agents = ["opencode", "omp"]
 operation = "symlink"
 type = "skill"
 provenance = "vendor"
 source_repo = "https://github.com/mattpocock/skills"
 source_path = "skills/productivity/grilling"
-source_sha = "959a8e9f1edc3adbe2f7e3054bb6fbefa6696260"
+source_sha = "74ca5fe077456a0b3b2f5310cf9430999fd0b5fd"
 src = "src/skills/grilling"
 target = "skills/grilling"
 
 [[artifacts]]
 name = "writing-for-agents"
+agents = ["opencode", "omp"]
 operation = "symlink"
 type = "skill"
 provenance = "vendor"
 source_repo = "https://github.com/mattpocock/skills"
 source_path = "skills/productivity/writing-for-agents"
-source_sha = "959a8e9f1edc3adbe2f7e3054bb6fbefa6696260"
+source_sha = "74ca5fe077456a0b3b2f5310cf9430999fd0b5fd"
 src = "src/skills/writing-for-agents"
 target = "skills/writing-for-agents"
 
 [[artifacts]]
 name = "using-git-worktrees"
+agents = ["opencode", "omp"]
 operation = "symlink"
 type = "skill"
 provenance = "vendor"
@@ -155,6 +167,7 @@ target = "skills/using-git-worktrees"
 
 [[artifacts]]
 name = "verification-before-completion"
+agents = ["opencode", "omp"]
 operation = "symlink"
 type = "skill"
 provenance = "vendor"
@@ -166,6 +179,7 @@ target = "skills/verification-before-completion"
 
 [[artifacts]]
 name = "glab"
+agents = ["opencode", "omp"]
 operation = "symlink"
 type = "skill"
 provenance = "original"
@@ -175,6 +189,7 @@ target = "skills/glab"
 # ------------------------------------------------------------ instructions
 [[artifacts]]
 name = "caveman"
+agents = ["opencode", "omp"]
 operation = "text-insert"
 type = "instruction"
 provenance = "original"
@@ -185,6 +200,7 @@ anchor = "<!-- caveman-begin -->"
 
 [[artifacts]]
 name = "file-edit-limits"
+agents = ["opencode"]
 operation = "text-insert"
 type = "instruction"
 provenance = "original"
@@ -195,18 +211,39 @@ anchor = "<!-- file-edit-size-limits:start -->"
 
 # ------------------------------------------------------------------- themes
 [[artifacts]]
-name = "github-dark-default"
+name = "oc-github-dark"
+agents = ["opencode"]
 operation = "symlink"
 type = "theme"
 provenance = "original"
-src = "src/themes/github-dark-default.json"
-target = "themes/github-dark-default.json"
+src = "src/themes/oc-github-dark.json"
+target = "themes/oc-github-dark.json"
 
 [[artifacts]]
 name = "theme-default"
+agents = ["opencode"]
 operation = "config-merge"
 type = "theme"
 provenance = "original"
 config_file = "tui.json"
 config_path = "theme"
-value = '"github-dark-default"'
+value = '"oc-github-dark"'
+
+[[artifacts]]
+name = "omp-github-dark"
+agents = ["omp"]
+operation = "symlink"
+type = "theme"
+provenance = "original"
+src = "src/themes/omp-github-dark.json"
+target = "themes/github-dark.json"
+
+[[artifacts]]
+name = "omp-theme-default"
+agents = ["omp"]
+operation = "config-merge"
+type = "theme"
+provenance = "original"
+config_file = "config.yml"
+config_path = "theme.dark"
+value = '"github-dark"'

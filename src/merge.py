@@ -8,7 +8,7 @@ import subprocess
 import tempfile
 from pathlib import Path
 
-import ocmanifest
+import manifest
 
 UP_TO_DATE = 0
 ERROR = 1
@@ -369,7 +369,7 @@ def update_artifact(
         except Exception as error:  # pylint: disable=broad-exception-caught
             print(f"  {name}: update failed: {error}")
             return ERROR
-        ocmanifest.set_sha(manifest_path, name, head)
+        manifest.set_sha(manifest_path, name, head)
         return 0
 
     # fork
@@ -377,7 +377,7 @@ def update_artifact(
     # base without touching local customizations.
     if not sha:
         print(f"  {name}: first fork update — pinning base, keeping customizations")
-        ocmanifest.set_sha(manifest_path, name, head)
+        manifest.set_sha(manifest_path, name, head)
         return 0
     try:
         conflict = _apply_fork(artifact, local_path)
@@ -393,5 +393,5 @@ def update_artifact(
             "then re-run to bump sha"
         )
         return 0
-    ocmanifest.set_sha(manifest_path, name, head)
+    manifest.set_sha(manifest_path, name, head)
     return 0

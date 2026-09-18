@@ -26,7 +26,7 @@ CBM_INSTALL = (
 )
 
 # Bounded wait for a binary install (`npm install -g` or `curl | bash`). A
-# hung network fetch would otherwise block `oc install` indefinitely.
+# hung network fetch would otherwise block `setup install` indefinitely.
 INSTALL_TIMEOUT = 300
 
 
@@ -224,3 +224,43 @@ def init_project(
     )
     if mcp_bin:
         _init_codebase(root, mcp_bin, src_instruction, src_plugin)
+
+
+def uninstall_notice(cwd: Path) -> None:
+    """
+    Notify when the project containing cwd carries per-project
+    codebase-memory-mcp init that `setup uninstall` deliberately leaves alone.
+
+    Install writes a reminder block into AGENTS.md, a reminder plugin into
+    .opencode/plugins/, and an mcp entry into .opencode/opencode.json — all in
+    the project `setup install` was run from. Uninstall is scoped to the agent
+    config dir and never touches these; surface their presence so the user can
+    remove them by hand if they want a full teardown.
+    """
+    root = git_root(cwd)
+    if root is None:
+        return
+
+    agents = root / "AGENTS.md"
+    has_block = agents.exists() and INSTRUCTION_MARKER in agents.read_text(
+        encoding="utf-8"
+    )
+    plugin = root / ".opencode" / "plugins" / "CodebaseMemoryReminder.ts"
+    has_plugin = plugin.exists()
+    has_mcp_entry = False
+    config_path = root / ".opencode" / "opencode.json"
+    if config_path.exists():
+        data = json.loads(config_path.read_text(encoding="utf-8") or "{}")
+        has_mcp_entry = (
+            "codebase-memory-mcp" in data.get("mcp", {})
+        )
+
+    if not (has_block or has_plugin or has_mcp_entry):
+        return
+
+    print(
+        "note: this project has per-project codebase-memory-mcp init "
+        "(AGENTS.md instructions, .opencode/plugins/CodebaseMemoryReminder.ts, "
+        "and/or an opencode.json mcp entry). `setup uninstall` does not remove "
+        "these; delete .opencode/ and strip the AGENTS.md block to do so manually."
+    )
