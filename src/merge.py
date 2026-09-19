@@ -180,6 +180,27 @@ def _copy_tree(
                 item.unlink()
 
 
+def _has_conflict_markers(path: Path) -> bool:
+    """
+    Report whether a file or tree still carries unresolved conflict markers.
+
+    Args:
+        path: The file or directory to inspect.
+
+    Returns:
+        True if any file contains a `<<<<<<<` marker.
+    """
+    if path.is_file():
+        return "<<<<<<<" in path.read_text(errors="replace")
+    if path.is_dir():
+        return any(
+            "<<<<<<<" in child.read_text(errors="replace")
+            for child in path.rglob("*")
+            if child.is_file()
+        )
+    return False
+
+
 def _merge_file(
     ours_path: Path,
     base_path: Path,
@@ -348,6 +369,17 @@ def update_artifact(
     sha = artifact.get("source_sha", "")
     local_path = root / artifact["src"]
 
+    # A fork file still carrying conflict markers from an earlier merge is
+    # unresolved. Re-merging it would nest markers and never converge, so
+    # refuse until the user cleans it up.
+    if provenance == "fork" and _has_conflict_markers(local_path):
+        target = artifact["src"]
+        print(
+            f"  {name}: unresolved conflict markers in {target} — "
+            "resolve them, then re-run"
+        )
+        return ERROR
+
     head = head_sha(repo)
     if not head:
         # Upstream unreachable — fail rather than guess at drift.
@@ -385,12 +417,15 @@ def update_artifact(
         print(f"  {name}: update failed: {error}")
         return ERROR
     if conflict:
-        # Leave conflict markers for the user to resolve by hand; the sha
-        # is not bumped until they fix it and re-run.
+        # Advance the base even though markers remain: once resolved, the file
+        # is based on upstream HEAD, and replaying this same merge on a re-run
+        # would re-introduce (and nest) conflict markers forever. The marker
+        # gate above keeps the unresolved state visible.
+        manifest.set_sha(manifest_path, name, head)
         local_target = artifact["src"]
         print(
             f"  {name}: MERGE CONFLICTS — resolve markers in {local_target}, "
-            "then re-run to bump sha"
+            "then re-run"
         )
         return 0
     manifest.set_sha(manifest_path, name, head)

@@ -43,12 +43,6 @@ def test_manifest_loads_and_validates():
     assert "glab" in names
 
 
-def test_manifest_three_provenances_present():
-    m = manifest.load(MANIFEST)
-    provs = {a["provenance"] for a in m["artifacts"]}
-    assert provs == {"original", "vendor", "fork"}
-
-
 def test_set_sha_edits_correct_artifact(tmp_path):
     src = tmp_path / "m.toml"
     src.write_text(
@@ -388,6 +382,55 @@ def test_fork_merge_keeps_customization_and_merges(tmp_path, monkeypatch):
     result = src.read_text()
     assert "MY CUSTOMIZATION" in result
     assert "UPSTREAM footer" in result
+    assert manifest.load(mp)["artifacts"][0]["source_sha"] == head
+
+
+def test_fork_conflict_lifecycle_converges(tmp_path, monkeypatch):
+    upstream = tmp_path / "upstream"
+    sha1 = _make_repo(upstream, {"f.md": "a\nb\nc\n\n\n\n"})
+    # upstream rewrites the tail region our fork also touches
+    (upstream / "f.md").write_text("a\nb\nC\n")
+    git("add", "-A", cwd=upstream)
+    git("-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "-m", "c2", cwd=upstream)
+    head = git_out("rev-parse", "HEAD", cwd=upstream)
+
+    root = tmp_path / "root"
+    src = root / "src" / "commands" / "f.md"
+    src.parent.mkdir(parents=True)
+    src.write_text("a\nb\nc\n\n\n\nOUR_EXTRA\n")
+
+    mp = tmp_path / "m.toml"
+    mp.write_text(
+        f'version = 2\n[[artifacts]]\nname = "f"\noperation = "symlink"\nagents = ["opencode"]\n'
+        f'provenance = "fork"\nsource_repo = "{upstream}"\n'
+        f'source_path = "f.md"\nsource_sha = "{sha1}"\n'
+        f'src = "src/commands/f.md"\ntarget = "commands/f.md"\n'
+    )
+    art = manifest.find(manifest.load(mp), "f")
+    monkeypatch.setattr(
+        merge, "_fetch_raw",
+        lambda repo, spath, ref, dest: _local_fetch(Path(repo), spath, ref, Path(dest)),
+    )
+
+    # Pull conflicts: markers land and the base advances to upstream HEAD.
+    assert merge.update_artifact(mp, root, art) == 0
+    assert "<<<<<<<" in src.read_text()
+    assert manifest.load(mp)["artifacts"][0]["source_sha"] == head
+
+    # Unresolved markers must block further updates instead of re-merging the
+    # marked file (which nests markers and never converges).
+    art = manifest.find(manifest.load(mp), "f")  # each run reloads the manifest
+    assert merge.update_artifact(mp, root, art, check_only=True) == merge.ERROR
+    assert src.read_text().count("<<<<<<<") == 1
+
+    # Resolve, keeping both the upstream change and our addition.
+    src.write_text("a\nb\nC\n\nOUR_EXTRA\n")
+
+    # The resolved file is based on upstream HEAD, so the re-run finalizes
+    # cleanly rather than replaying the same merge.
+    art = manifest.find(manifest.load(mp), "f")
+    assert merge.update_artifact(mp, root, art) == 0
+    assert "<<<<<<<" not in src.read_text()
     assert manifest.load(mp)["artifacts"][0]["source_sha"] == head
 
 

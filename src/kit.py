@@ -286,7 +286,10 @@ def _run_vendor(
             exit_code = 1
 
     if not behind:
-        print("  all artifacts up to date")
+        # Unresolved forks report an error without drift, so only claim
+        # everything is current when nothing failed.
+        if exit_code == 0:
+            print("  all artifacts up to date")
         return exit_code
 
     if not _confirm(

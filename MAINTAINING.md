@@ -41,7 +41,7 @@ that file has a `provenance` of `original`, `vendor`, or `fork`:
 
 | Upstream repo | What we take | Relationship |
 | --- | --- | --- |
-| [mattpocock/skills](https://github.com/mattpocock/skills) | **Commands:**<br>`/grill-me`, `/handoff`<br><br>**Skills:**<br>`diagnosing-bugs`, `codebase-design`, `domain-modeling`, `improve-codebase-architecture`, `grilling`, `writing-for-agents` | vendor + fork (grill-me) |
+| [mattpocock/skills](https://github.com/mattpocock/skills) | **Commands:**<br>`/grill-me`, `/handoff`<br><br>**Skills:**<br>`diagnosing-bugs`, `codebase-design`, `domain-modeling`, `improve-codebase-architecture`, `grilling`, `writing-for-agents` | vendor |
 | [obra/superpowers](https://github.com/obra/superpowers) | **Skills:**<br>`using-git-worktrees`, `verification-before-completion` | vendor |
 
 ---
@@ -68,8 +68,11 @@ Behavior by provenance:
 - **fork** — 3-way merge (`git merge-file`): base = upstream at pinned
   `source_sha`, ours = our file, theirs = upstream HEAD.
   - Clean merge → applied, `source_sha` bumped.
-  - Conflict → conflict markers written into the file, `source_sha` **not**
-    bumped. Resolve markers, then re-run `setup vendor` to finalize.
+  - Conflict → conflict markers written into the file and `source_sha` bumped
+    to upstream HEAD (the revision the resolved file will be based on). A file
+    that still carries markers is never re-merged — `setup vendor` reports it
+    as unresolved and refuses — so repeated runs cannot nest markers. Resolve
+    the markers; the next `setup vendor` then sees the artifact as up to date.
   - First fork update (no `source_sha` yet) → **pins** upstream as base and
     leaves our file untouched. This is deliberate: it never clobbers
     customizations on first run.
@@ -83,12 +86,10 @@ merge base drifts and future merges lie.
 
 ### Commands
 
-#### grill-me — `fork` (mattpocock)
-Customized: our `/grill-me` is a thin command that delegates to the `/grilling`
-skill, rather than embedding the full interview logic. See `grilling` below.
-Reason: keep the command as a stable entry point while the interview lives in
-the skill it delegates to. Upstream wording changes should merge into the
-skill; our thin wrapper should survive.
+#### grill-me — `vendor` (mattpocock)
+Stolen verbatim; used as `/grill-me`. Upstream already delegates to the
+`/grilling` skill rather than embedding the interview logic, so there is
+nothing local to protect. See `grilling` below.
 
 #### handoff — `vendor` (mattpocock)
 Stolen verbatim; used as `/handoff`. No local changes.
