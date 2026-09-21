@@ -220,6 +220,42 @@ src = "src/themes/oc-github-dark.json"
 target = "themes/oc-github-dark.json"
 
 [[artifacts]]
+name = "poimandres"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/ajaxdude/opencode-ai-poimandres-theme"
+source_path = ".opencode/themes/poimandres.json"
+source_sha = "f87ba503439b012fe495092104a51ef4163c8b19"
+src = "src/themes/poimandres.json"
+target = "themes/poimandres.json"
+
+[[artifacts]]
+name = "poimandres-turquoise-expanded"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/ajaxdude/opencode-ai-poimandres-theme"
+source_path = ".opencode/themes/poimandres-turquoise-expanded.json"
+source_sha = "f87ba503439b012fe495092104a51ef4163c8b19"
+src = "src/themes/poimandres-turquoise-expanded.json"
+target = "themes/poimandres-turquoise-expanded.json"
+
+[[artifacts]]
+name = "poimandres-accessible"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/ajaxdude/opencode-ai-poimandres-theme"
+source_path = ".opencode/themes/poimandres-accessible.json"
+source_sha = "f87ba503439b012fe495092104a51ef4163c8b19"
+src = "src/themes/poimandres-accessible.json"
+target = "themes/poimandres-accessible.json"
+
+[[artifacts]]
 name = "theme-default"
 agents = ["opencode"]
 operation = "config-merge"
@@ -227,7 +263,7 @@ type = "theme"
 provenance = "original"
 config_file = "tui.json"
 config_path = "theme"
-value = '"oc-github-dark"'
+value = '"poimandres-turquoise-expanded"'
 
 [[artifacts]]
 name = "omp-github-dark"

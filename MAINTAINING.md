@@ -129,7 +129,13 @@ The terse "smart caveman" speaking rules, prepended to the global `AGENTS.md`.
 The chunked-assembly rule for large file writes, appended to `AGENTS.md`.
 
 #### oc-github-dark — `original`
-Our default theme; also sets `theme` in `tui.json`. The Oh My Pi equivalent
+Our own GitHub-dark theme. Not the default anymore; kept as a fallback theme
+(`themes/oc-github-dark.json`).
+
+#### poimandres / poimandres-turquoise-expanded / poimandres-accessible — `vendor`
+Vendored from [ajaxdude/opencode-ai-poimandres-theme](https://github.com/ajaxdude/opencode-ai-poimandres-theme)
+(`.opencode/themes/*.json`). `poimandres-turquoise-expanded` is the default
+and sets `theme` in `tui.json`. The Oh My Pi equivalent
 is `omp-github-dark` (installed as `themes/github-dark.json`; selected via a
 `config-merge` into `config.yml`).
 

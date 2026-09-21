@@ -91,7 +91,7 @@ def test_install_symlinks_text_and_config(tmp_path, monkeypatch):
     assert "file-edit-size-limits:start" in text
 
     tui = json.loads((cfg / "tui.json").read_text())
-    assert tui["theme"] == "oc-github-dark"
+    assert tui["theme"] == "poimandres-turquoise-expanded"
     # codebase-memory-mcp is per-project now (see project), not global config.
     assert not (cfg / "opencode.json").exists()
 
