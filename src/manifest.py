@@ -3,7 +3,10 @@ Load and validate the manifest.toml file.
 """
 from __future__ import annotations
 
-import tomllib
+try:
+    import tomllib
+except ModuleNotFoundError:  # Python < 3.11
+    import tomli as tomllib  # type: ignore[no-redef]
 from pathlib import Path
 
 import config

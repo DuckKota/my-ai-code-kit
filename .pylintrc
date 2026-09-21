@@ -17,7 +17,7 @@
 # Add files or directories matching the regular expressions patterns to
 # the ignore list. The regex matches against paths and can be used in Posix or
 # Windows format.
-ignore-paths=common-scripts.*,\.githooks.*
+ignore-paths=common-scripts.*,\.githooks.*,src/tomli.*
 
 # Pickle collected data for later comparisons.
 persistent=yes

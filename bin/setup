@@ -15,12 +15,12 @@ then
     exit 1
 fi
 
-# Locate a Python 3.11+ interpreter: python3 preferred, python as fallback.
+# Locate a Python 3.9+ interpreter: python3 preferred, python as fallback.
 PYTHON=""
 for candidate in python3 python
 do
     if command -v "$candidate" >/dev/null 2>&1 \
-        && "$candidate" -c 'import sys; sys.exit(0 if sys.version_info >= (3, 11) else 1)' >/dev/null 2>&1
+        && "$candidate" -c 'import sys; sys.exit(0 if sys.version_info >= (3, 9) else 1)' >/dev/null 2>&1
     then
         PYTHON="$candidate"
         break
@@ -29,7 +29,7 @@ done
 
 if [[ -z "$PYTHON" ]]
 then
-    echo "error: python3 (or python, 3.11+) required" >&2
+    echo "error: python3 (or python, 3.9+) required" >&2
     exit 1
 fi
 

@@ -5,7 +5,7 @@
 ```bash
 git clone https://github.com/DuckKota/my-ai-code-kit.git
 cd my-ai-code-kit
-./bin/setup install   # requires python 3.11+
+./bin/setup install   # requires python 3.9+
 
 # Inside a git repository, `setup install` also installs and initializes OpenSpec and codebase-memory-mcp for that project (prompts first; idempotent).
 ```
