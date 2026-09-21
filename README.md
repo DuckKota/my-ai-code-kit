@@ -10,11 +10,13 @@ cd my-ai-code-kit
 # Inside a git repository, `setup install` also installs and initializes OpenSpec and codebase-memory-mcp for that project (prompts first; idempotent).
 ```
 
-> [!IMPORTANT] Manually install the following...
-> [Ponytail](https://github.com/DietrichGebert/ponytail#readme)
-> [Planotator](https://plannotator.ai/)
-> [Magic Context](https://github.com/cortexkit/magic-context)
-> [Open Code Review](https://github.com/alibaba/open-code-review/blob/main/plugins/open-code-review/opencode/README.md)
+> [!important]
+> Manually install the following:
+>
+> - [Ponytail](https://github.com/DietrichGebert/ponytail#readme)
+> - [Planotator](https://plannotator.ai/)
+> - [Magic Context](https://github.com/cortexkit/magic-context)
+> - [Open Code Review](https://github.com/alibaba/open-code-review/blob/main/plugins/open-code-review/opencode/README.md)
 
 ### The Complete Kit
 
