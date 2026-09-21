@@ -10,19 +10,11 @@ cd my-ai-code-kit
 # Inside a git repository, `setup install` also installs and initializes OpenSpec and codebase-memory-mcp for that project (prompts first; idempotent).
 ```
 
-<details>
-  <summary>Install Ponytail</summary>
-
-  **Oh My Pi:** Run the command `omp install git:github.com/DietrichGebert/ponytail`
-
-  **OpenCode:** Add the plugin `"plugin": ["@dietrichgebert/ponytail"]` to your `opencode.json` file
-</details>
-
-<details>
-  <summary>Magic Context</summary>
-
-  Run the command `curl -fsSL https://raw.githubusercontent.com/cortexkit/magic-context/master/scripts/install.sh | bash`
-</details>
+> [!IMPORTANT] Manually install the following...
+> [Ponytail](https://github.com/DietrichGebert/ponytail#readme)
+> [Planotator](https://plannotator.ai/)
+> [Magic Context](https://github.com/cortexkit/magic-context)
+> [Open Code Review](https://github.com/alibaba/open-code-review/blob/main/plugins/open-code-review/opencode/README.md)
 
 ### The Complete Kit
 
@@ -33,7 +25,7 @@ cd my-ai-code-kit
 
 **Skills:** [diagnosing-bugs](./src/skills/diagnosing-bugs/) • [codebase-design](./src/skills/codebase-design/) • [domain-modeling](./src/skills/domain-modeling/) • [improve-codebase-architecture](./src/skills/improve-codebase-architecture/) • [using-git-worktrees](./src/skills/using-git-worktrees/) • [verification-before-completion](./src/skills/verification-before-completion/)
 
-**Tools:** [codebase-memory-mcp](https://deusdata.github.io/codebase-memory-mcp/) • [OpenSpec](https://openspec.dev/) • [ponytail](https://ponytail.dev/) • [Magic Context](https://github.com/cortexkit/magic-context)
+**Tools:** [codebase-memory-mcp](https://deusdata.github.io/codebase-memory-mcp/) • [OpenSpec](https://openspec.dev/)
 
 **Other:** [caveman](./src/instructions/caveman.md) • [batch-file-writes](./src/instructions/file-edit-limits.md)
 
