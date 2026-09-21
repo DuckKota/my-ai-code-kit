@@ -20,8 +20,44 @@ cd my-ai-code-kit
 
 ### The Complete Kit
 
-> [!NOTE]
+> [!tip]
 > My workflow is designed with a "command first" approach. My personal OMP command reference lives in [CHEATSHEET.md](./CHEATSHEET.md).
+
+
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+
+<div>
+
+> [!NOTE]
+> First note
+
+</div>
+
+<div>
+
+> [!NOTE]
+> Second note
+
+</div>
+
+<div>
+
+> [!NOTE]
+> Third note
+
+</div>
+
+<div>
+
+> [!NOTE]
+> Fourth note
+
+</div>
+
+</div>
+
+
 
 **Commands:** [/commit-message](./src/commands/commit-message.md) • [/grill-me](./src/commands/grill-me.md) • [/fix](./src/commands/fix.md) • [/handoff](./src/commands/handoff.md) • [/glab-mr](./src/commands/glab-mr.md) • [/ponytail](https://ponytail.dev/) • [/ponytail-review](https://ponytail.dev/)
 
