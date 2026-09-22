@@ -24,13 +24,40 @@ cd my-ai-code-kit
 > [!tip]
 > My workflow is designed with a "command first" approach. See my [CHEATSHEET.md](./CHEATSHEET.md).
 
-| Commands | Skills |
-|---|---|
-| [`/commit-message`](./src/commands/commit-message.md) · [`/grill-me`](./src/commands/grill-me.md) · [`/fix`](./src/commands/fix.md) · [`/handoff`](./src/commands/handoff.md) · [`/glab-mr`](./src/commands/glab-mr.md) · [`/humanizer`](./src/commands/humanizer.md) · [`/ponytail`](https://ponytail.dev/) · [`/ponytail-review`](https://ponytail.dev/) | [`diagnosing-bugs`](./src/skills/diagnosing-bugs/) · [`codebase-design`](./src/skills/codebase-design/) · [`domain-modeling`](./src/skills/domain-modeling/) · [`humanize-writing`](./src/skills/humanize-writing/) · [`improve-codebase-architecture`](./src/skills/improve-codebase-architecture/) · [`using-git-worktrees`](./src/skills/using-git-worktrees/) · [`verification-before-completion`](./src/skills/verification-before-completion/) |
+<details>
+<summary>The full kit...</summary>
 
-| Tools | Other |
-|---|---|
-| [`codebase-memory-mcp`](https://deusdata.github.io/codebase-memory-mcp/) · [`OpenSpec`](https://openspec.dev/) | [`caveman`](./src/instructions/caveman.md) · [`batch-file-writes`](./src/instructions/file-edit-limits.md) |
+> [!note] Commands
+> 
+> - [`/commit-message`](./src/commands/commit-message.md)
+> - [`/grill-me`](./src/commands/grill-me.md)
+> - [`/fix`](./src/commands/fix.md)
+> - [`/handoff`](./src/commands/handoff.md)
+> - [`/humanizer`](./src/commands/humanizer.md)
+> - [`/ponytail`](https://ponytail.dev/)
+> - [`/ponytail-review`](https://ponytail.dev/)
+
+> [!note] Skills
+> 
+> - [`diagnosing-bugs`](./src/skills/diagnosing-bugs/)
+> - [`codebase-design`](./src/skills/codebase-design/)
+> - [`domain-modeling`](./src/skills/domain-modeling/)
+> - [`humanize-writing`](./src/skills/humanize-writing/)
+> - [`improve-codebase-architecture`](./src/skills/improve-codebase-architecture/)
+> - [`using-git-worktrees`](./src/skills/using-git-worktrees/)
+> - [`verification-before-completion`](./src/skills/verification-before-completion/)
+
+> [!note] Tools
+> 
+> - [`codebase-memory-mcp`](https://deusdata.github.io/codebase-memory-mcp/)
+> - [`OpenSpec`](https://openspec.dev/)
+
+> [!note] Others
+> 
+> - [`caveman`](./src/instructions/caveman.md)
+> - [`batch-file-writes`](./src/instructions/file-edit-limits.md)
+
+</details>
 
 ---
 
