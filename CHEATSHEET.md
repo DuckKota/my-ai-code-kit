@@ -9,7 +9,7 @@ I don't describe what I want in words and hope the agent figures it out. I drive
 
 ## Feature flow
 
-For new features, design-reviewable changes, and refactors, one idea walks through sharpen → spec → plan-review → implement → review → close.
+For new features, design-reviewable changes, and refactors, one idea walks through sharpen → spec → plan-review → implement → review → close. Run the following commands in the following order.
 
 | Stage | Command | What it does |
 | --- | --- | --- |
@@ -29,7 +29,10 @@ For new features, design-reviewable changes, and refactors, one idea walks throu
 
 **This is the contract. Follow it.** Bug fixes skip the feature ceremony. A bug fix is already scoped; the fix *is* the spec. Don't open an OpenSpec proposal, annotate plans, or archive for a two-line patch.
 
-**Escalation rule:** a bug is worth the full feature flow only when it is architectural: it spans subsystems, needs design decisions, or is really a refactor wearing a bug's clothes. Don't patch it through `/fix`. If you've already diagnosed it, enter the feature flow at the Spec step (`/opsx-propose`). If you haven't, run `/opsx-explore` to design the fix, then `/opsx-propose`. Either way, from Spec onward it's the normal feature flow: apply → review → close.
+> [!important]
+> A bug is worth the full feature flow only when it is architectural: it spans subsystems, needs design decisions, or is really a refactor wearing a bug's clothes. Don't patch it through `/fix`.
+> 
+> If you've already diagnosed it, enter the feature flow at the Spec step (`/opsx-propose`). If you haven't, run `/opsx-explore` to design the fix, then `/opsx-propose`. Either way, from Spec onward it's the normal feature flow defined above.
 
 | Stage | Command | What it does |
 | --- | --- | --- |
