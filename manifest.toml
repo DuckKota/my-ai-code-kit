@@ -304,6 +304,702 @@ src = "src/themes/poimandres-accessible.json"
 target = "themes/poimandres-accessible.json"
 
 [[artifacts]]
+name = "eldritch-cthulhu"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/eldritch-theme/opencode"
+source_path = "themes/eldritch-cthulhu.json"
+source_sha = "ad151f7db265a866ce1c50212d79660a4dc43147"
+src = "src/themes/eldritch-cthulhu.json"
+target = "themes/eldritch-cthulhu.json"
+
+[[artifacts]]
+name = "eldritch-abyss"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/eldritch-theme/opencode"
+source_path = "themes/eldritch-abyss.json"
+source_sha = "ad151f7db265a866ce1c50212d79660a4dc43147"
+src = "src/themes/eldritch-abyss.json"
+target = "themes/eldritch-abyss.json"
+
+[[artifacts]]
+name = "catppuccin-latte-blue"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/latte/catppuccin-latte-blue.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-latte-blue.json"
+target = "themes/catppuccin-latte-blue.json"
+
+[[artifacts]]
+name = "catppuccin-latte-flamingo"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/latte/catppuccin-latte-flamingo.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-latte-flamingo.json"
+target = "themes/catppuccin-latte-flamingo.json"
+
+[[artifacts]]
+name = "catppuccin-latte-green"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/latte/catppuccin-latte-green.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-latte-green.json"
+target = "themes/catppuccin-latte-green.json"
+
+[[artifacts]]
+name = "catppuccin-latte-lavender"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/latte/catppuccin-latte-lavender.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-latte-lavender.json"
+target = "themes/catppuccin-latte-lavender.json"
+
+[[artifacts]]
+name = "catppuccin-latte-maroon"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/latte/catppuccin-latte-maroon.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-latte-maroon.json"
+target = "themes/catppuccin-latte-maroon.json"
+
+[[artifacts]]
+name = "catppuccin-latte-mauve"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/latte/catppuccin-latte-mauve.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-latte-mauve.json"
+target = "themes/catppuccin-latte-mauve.json"
+
+[[artifacts]]
+name = "catppuccin-latte-peach"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/latte/catppuccin-latte-peach.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-latte-peach.json"
+target = "themes/catppuccin-latte-peach.json"
+
+[[artifacts]]
+name = "catppuccin-latte-pink"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/latte/catppuccin-latte-pink.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-latte-pink.json"
+target = "themes/catppuccin-latte-pink.json"
+
+[[artifacts]]
+name = "catppuccin-latte-red"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/latte/catppuccin-latte-red.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-latte-red.json"
+target = "themes/catppuccin-latte-red.json"
+
+[[artifacts]]
+name = "catppuccin-latte-rosewater"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/latte/catppuccin-latte-rosewater.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-latte-rosewater.json"
+target = "themes/catppuccin-latte-rosewater.json"
+
+[[artifacts]]
+name = "catppuccin-latte-sapphire"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/latte/catppuccin-latte-sapphire.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-latte-sapphire.json"
+target = "themes/catppuccin-latte-sapphire.json"
+
+[[artifacts]]
+name = "catppuccin-latte-sky"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/latte/catppuccin-latte-sky.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-latte-sky.json"
+target = "themes/catppuccin-latte-sky.json"
+
+[[artifacts]]
+name = "catppuccin-latte-teal"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/latte/catppuccin-latte-teal.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-latte-teal.json"
+target = "themes/catppuccin-latte-teal.json"
+
+[[artifacts]]
+name = "catppuccin-latte-yellow"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/latte/catppuccin-latte-yellow.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-latte-yellow.json"
+target = "themes/catppuccin-latte-yellow.json"
+
+[[artifacts]]
+name = "catppuccin-frappe-blue"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/frappe/catppuccin-frappe-blue.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-frappe-blue.json"
+target = "themes/catppuccin-frappe-blue.json"
+
+[[artifacts]]
+name = "catppuccin-frappe-flamingo"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/frappe/catppuccin-frappe-flamingo.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-frappe-flamingo.json"
+target = "themes/catppuccin-frappe-flamingo.json"
+
+[[artifacts]]
+name = "catppuccin-frappe-green"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/frappe/catppuccin-frappe-green.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-frappe-green.json"
+target = "themes/catppuccin-frappe-green.json"
+
+[[artifacts]]
+name = "catppuccin-frappe-lavender"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/frappe/catppuccin-frappe-lavender.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-frappe-lavender.json"
+target = "themes/catppuccin-frappe-lavender.json"
+
+[[artifacts]]
+name = "catppuccin-frappe-maroon"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/frappe/catppuccin-frappe-maroon.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-frappe-maroon.json"
+target = "themes/catppuccin-frappe-maroon.json"
+
+[[artifacts]]
+name = "catppuccin-frappe-mauve"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/frappe/catppuccin-frappe-mauve.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-frappe-mauve.json"
+target = "themes/catppuccin-frappe-mauve.json"
+
+[[artifacts]]
+name = "catppuccin-frappe-peach"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/frappe/catppuccin-frappe-peach.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-frappe-peach.json"
+target = "themes/catppuccin-frappe-peach.json"
+
+[[artifacts]]
+name = "catppuccin-frappe-pink"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/frappe/catppuccin-frappe-pink.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-frappe-pink.json"
+target = "themes/catppuccin-frappe-pink.json"
+
+[[artifacts]]
+name = "catppuccin-frappe-red"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/frappe/catppuccin-frappe-red.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-frappe-red.json"
+target = "themes/catppuccin-frappe-red.json"
+
+[[artifacts]]
+name = "catppuccin-frappe-rosewater"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/frappe/catppuccin-frappe-rosewater.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-frappe-rosewater.json"
+target = "themes/catppuccin-frappe-rosewater.json"
+
+[[artifacts]]
+name = "catppuccin-frappe-sapphire"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/frappe/catppuccin-frappe-sapphire.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-frappe-sapphire.json"
+target = "themes/catppuccin-frappe-sapphire.json"
+
+[[artifacts]]
+name = "catppuccin-frappe-sky"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/frappe/catppuccin-frappe-sky.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-frappe-sky.json"
+target = "themes/catppuccin-frappe-sky.json"
+
+[[artifacts]]
+name = "catppuccin-frappe-teal"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/frappe/catppuccin-frappe-teal.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-frappe-teal.json"
+target = "themes/catppuccin-frappe-teal.json"
+
+[[artifacts]]
+name = "catppuccin-frappe-yellow"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/frappe/catppuccin-frappe-yellow.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-frappe-yellow.json"
+target = "themes/catppuccin-frappe-yellow.json"
+
+[[artifacts]]
+name = "catppuccin-macchiato-blue"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/macchiato/catppuccin-macchiato-blue.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-macchiato-blue.json"
+target = "themes/catppuccin-macchiato-blue.json"
+
+[[artifacts]]
+name = "catppuccin-macchiato-flamingo"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/macchiato/catppuccin-macchiato-flamingo.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-macchiato-flamingo.json"
+target = "themes/catppuccin-macchiato-flamingo.json"
+
+[[artifacts]]
+name = "catppuccin-macchiato-green"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/macchiato/catppuccin-macchiato-green.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-macchiato-green.json"
+target = "themes/catppuccin-macchiato-green.json"
+
+[[artifacts]]
+name = "catppuccin-macchiato-lavender"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/macchiato/catppuccin-macchiato-lavender.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-macchiato-lavender.json"
+target = "themes/catppuccin-macchiato-lavender.json"
+
+[[artifacts]]
+name = "catppuccin-macchiato-maroon"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/macchiato/catppuccin-macchiato-maroon.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-macchiato-maroon.json"
+target = "themes/catppuccin-macchiato-maroon.json"
+
+[[artifacts]]
+name = "catppuccin-macchiato-mauve"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/macchiato/catppuccin-macchiato-mauve.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-macchiato-mauve.json"
+target = "themes/catppuccin-macchiato-mauve.json"
+
+[[artifacts]]
+name = "catppuccin-macchiato-peach"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/macchiato/catppuccin-macchiato-peach.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-macchiato-peach.json"
+target = "themes/catppuccin-macchiato-peach.json"
+
+[[artifacts]]
+name = "catppuccin-macchiato-pink"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/macchiato/catppuccin-macchiato-pink.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-macchiato-pink.json"
+target = "themes/catppuccin-macchiato-pink.json"
+
+[[artifacts]]
+name = "catppuccin-macchiato-red"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/macchiato/catppuccin-macchiato-red.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-macchiato-red.json"
+target = "themes/catppuccin-macchiato-red.json"
+
+[[artifacts]]
+name = "catppuccin-macchiato-rosewater"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/macchiato/catppuccin-macchiato-rosewater.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-macchiato-rosewater.json"
+target = "themes/catppuccin-macchiato-rosewater.json"
+
+[[artifacts]]
+name = "catppuccin-macchiato-sapphire"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/macchiato/catppuccin-macchiato-sapphire.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-macchiato-sapphire.json"
+target = "themes/catppuccin-macchiato-sapphire.json"
+
+[[artifacts]]
+name = "catppuccin-macchiato-sky"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/macchiato/catppuccin-macchiato-sky.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-macchiato-sky.json"
+target = "themes/catppuccin-macchiato-sky.json"
+
+[[artifacts]]
+name = "catppuccin-macchiato-teal"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/macchiato/catppuccin-macchiato-teal.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-macchiato-teal.json"
+target = "themes/catppuccin-macchiato-teal.json"
+
+[[artifacts]]
+name = "catppuccin-macchiato-yellow"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/macchiato/catppuccin-macchiato-yellow.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-macchiato-yellow.json"
+target = "themes/catppuccin-macchiato-yellow.json"
+
+[[artifacts]]
+name = "catppuccin-mocha-blue"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/mocha/catppuccin-mocha-blue.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-mocha-blue.json"
+target = "themes/catppuccin-mocha-blue.json"
+
+[[artifacts]]
+name = "catppuccin-mocha-flamingo"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/mocha/catppuccin-mocha-flamingo.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-mocha-flamingo.json"
+target = "themes/catppuccin-mocha-flamingo.json"
+
+[[artifacts]]
+name = "catppuccin-mocha-green"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/mocha/catppuccin-mocha-green.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-mocha-green.json"
+target = "themes/catppuccin-mocha-green.json"
+
+[[artifacts]]
+name = "catppuccin-mocha-lavender"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/mocha/catppuccin-mocha-lavender.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-mocha-lavender.json"
+target = "themes/catppuccin-mocha-lavender.json"
+
+[[artifacts]]
+name = "catppuccin-mocha-maroon"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/mocha/catppuccin-mocha-maroon.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-mocha-maroon.json"
+target = "themes/catppuccin-mocha-maroon.json"
+
+[[artifacts]]
+name = "catppuccin-mocha-mauve"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/mocha/catppuccin-mocha-mauve.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-mocha-mauve.json"
+target = "themes/catppuccin-mocha-mauve.json"
+
+[[artifacts]]
+name = "catppuccin-mocha-peach"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/mocha/catppuccin-mocha-peach.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-mocha-peach.json"
+target = "themes/catppuccin-mocha-peach.json"
+
+[[artifacts]]
+name = "catppuccin-mocha-pink"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/mocha/catppuccin-mocha-pink.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-mocha-pink.json"
+target = "themes/catppuccin-mocha-pink.json"
+
+[[artifacts]]
+name = "catppuccin-mocha-red"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/mocha/catppuccin-mocha-red.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-mocha-red.json"
+target = "themes/catppuccin-mocha-red.json"
+
+[[artifacts]]
+name = "catppuccin-mocha-rosewater"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/mocha/catppuccin-mocha-rosewater.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-mocha-rosewater.json"
+target = "themes/catppuccin-mocha-rosewater.json"
+
+[[artifacts]]
+name = "catppuccin-mocha-sapphire"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/mocha/catppuccin-mocha-sapphire.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-mocha-sapphire.json"
+target = "themes/catppuccin-mocha-sapphire.json"
+
+[[artifacts]]
+name = "catppuccin-mocha-sky"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/mocha/catppuccin-mocha-sky.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-mocha-sky.json"
+target = "themes/catppuccin-mocha-sky.json"
+
+[[artifacts]]
+name = "catppuccin-mocha-teal"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/mocha/catppuccin-mocha-teal.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-mocha-teal.json"
+target = "themes/catppuccin-mocha-teal.json"
+
+[[artifacts]]
+name = "catppuccin-mocha-yellow"
+agents = ["opencode"]
+operation = "symlink"
+type = "theme"
+provenance = "vendor"
+source_repo = "https://github.com/catppuccin/opencode"
+source_path = "themes/mocha/catppuccin-mocha-yellow.json"
+source_sha = "d5f409632e6294762925fae869ad0c96dc17cd8e"
+src = "src/themes/catppuccin-mocha-yellow.json"
+target = "themes/catppuccin-mocha-yellow.json"
+
+[[artifacts]]
 name = "theme-default"
 agents = ["opencode"]
 operation = "config-merge"
@@ -311,7 +1007,7 @@ type = "theme"
 provenance = "original"
 config_file = "tui.json"
 config_path = "theme"
-value = '"poimandres-turquoise-expanded"'
+value = '"catppuccin-mocha-teal"'
 
 [[artifacts]]
 name = "omp-github-dark"

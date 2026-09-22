@@ -22,7 +22,7 @@ cd my-ai-code-kit
 ## Usage
 
 > [!tip]
-> My workflow is designed with a **command-first** approach. See my [CHEATSHEET.md](./CHEATSHEET.md) to see how I work.
+> I work command-first. See my [CHEATSHEET.md](./CHEATSHEET.md) for the workflow.
 
 <details>
 <summary>The Complete Kit...</summary>
@@ -56,6 +56,12 @@ cd my-ai-code-kit
 > 
 > - [`caveman`](./src/instructions/caveman.md)
 > - [`batch-file-writes`](./src/instructions/file-edit-limits.md)
+
+> **OpenCode Themes**
+> 
+> - [Poimandres](https://github.com/ajaxdude/opencode-ai-poimandres-theme): `poimandres`, `poimandres-turquoise-expanded`, `poimandres-accessible`
+> - [Eldritch](https://github.com/eldritch-theme/opencode): `eldritch-cthulhu`, `eldritch-abyss`
+> - [Catppuccin](https://github.com/catppuccin/opencode): 56 themes — 4 flavors (Latte, Frappé, Macchiato, Mocha) × 14 accents (blue, flamingo, green, lavender, maroon, mauve, peach, pink, red, rosewater, sapphire, sky, teal, yellow), e.g. `catppuccin-mocha-teal`
 
 </details>
 
