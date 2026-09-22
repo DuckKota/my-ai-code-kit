@@ -27,7 +27,7 @@ cd my-ai-code-kit
 <details>
 <summary>The full kit...</summary>
 
-> [!note] Commands
+> **Commands**
 > 
 > - [`/commit-message`](./src/commands/commit-message.md)
 > - [`/grill-me`](./src/commands/grill-me.md)
@@ -37,7 +37,7 @@ cd my-ai-code-kit
 > - [`/ponytail`](https://ponytail.dev/)
 > - [`/ponytail-review`](https://ponytail.dev/)
 
-> [!note] Skills
+> **Skills**
 > 
 > - [`diagnosing-bugs`](./src/skills/diagnosing-bugs/)
 > - [`codebase-design`](./src/skills/codebase-design/)
@@ -47,12 +47,12 @@ cd my-ai-code-kit
 > - [`using-git-worktrees`](./src/skills/using-git-worktrees/)
 > - [`verification-before-completion`](./src/skills/verification-before-completion/)
 
-> [!note] Tools
+> **Tools**
 > 
 > - [`codebase-memory-mcp`](https://deusdata.github.io/codebase-memory-mcp/)
 > - [`OpenSpec`](https://openspec.dev/)
 
-> [!note] Others
+> **Others**
 > 
 > - [`caveman`](./src/instructions/caveman.md)
 > - [`batch-file-writes`](./src/instructions/file-edit-limits.md)
