@@ -45,6 +45,11 @@ The OMP init SHALL prepend the codebase-memory instruction block to the repo `AG
 - **THEN** `auto_index` and `auto_watch` are enabled for the repo's codebase-memory database
 - **AND** the repo `AGENTS.md` begins with the codebase-memory instruction block
 
+#### Scenario: Shared graph is indexed once on first init
+- **WHEN** `setup install --agent omp` runs on a project whose codebase-memory graph is not yet indexed
+- **THEN** the repo-level graph is indexed (per the `codebase-memory-initial-index` capability)
+- **AND** a subsequent `setup install --agent opencode` on the same repo skips indexing because the graph is already indexed
+
 ### Requirement: Stale user denylist is reconciled
 When the user-level OMP MCP config (`~/.omp/agent/mcp.json`, default profile) lists `codebase-memory-mcp` in `disabledServers`, setup SHALL prompt to remove the entry (the prompt is never bypassed by `--yes`). If the user declines, setup SHALL report that the OMP graph is unavailable and continue without error.
 

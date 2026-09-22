@@ -1047,6 +1047,99 @@ def test_omp_init_is_idempotent(tmp_path, monkeypatch):
     assert (root / "AGENTS.md").read_text() == agents_before
 
 
+def _R(code, stdout=""):
+    return type("R", (), {"returncode": code, "stdout": stdout, "stderr": ""})()
+
+
+def _index_subprocess(status_code, index_code):
+    """Fake subprocess.run branching on index_status vs index_repository."""
+    def run(cmd, **kw):
+        code = index_code if "index_repository" in " ".join(cmd) else status_code
+        return _R(code)
+    return run
+
+
+def test_initial_index_skips_when_indexed(tmp_path, monkeypatch, capsys):
+    root = tmp_path / "proj"
+    root.mkdir()
+    calls = []
+    monkeypatch.setattr(project.subprocess, "run", lambda cmd, **kw: calls.append(" ".join(cmd)) or _R(0))
+    project._initial_index(root, "/bin/cbm")
+    assert not any("index_repository" in c for c in calls)
+    assert "already indexed" in capsys.readouterr().out
+
+
+def test_initial_index_indexes_when_not_indexed(tmp_path, monkeypatch, capsys):
+    root = tmp_path / "proj"
+    root.mkdir()
+    calls = []
+    monkeypatch.setattr(
+        project.subprocess, "run",
+        lambda cmd, **kw: calls.append(" ".join(cmd)) or _index_subprocess(1, 0)(cmd, **kw),
+    )
+    project._initial_index(root, "/bin/cbm")
+    index_calls = [c for c in calls if "index_repository" in c]
+    assert index_calls
+    assert "--mode full" in index_calls[0]
+    status_calls = [c for c in calls if "index_status" in c]
+    assert status_calls
+    assert str(root.resolve()).lstrip("/").replace("/", "-") in status_calls[0]
+    assert "indexed" in capsys.readouterr().out
+
+
+def test_initial_index_warns_on_failure(tmp_path, monkeypatch, capsys):
+    root = tmp_path / "proj"
+    root.mkdir()
+    monkeypatch.setattr(project.subprocess, "run", _index_subprocess(1, 1))
+    project._initial_index(root, "/bin/cbm")  # must not raise
+    assert "warning" in capsys.readouterr().out
+
+
+def _fake_init_run(root, indexed):
+    """Fake subprocess.run for init_project: handle git_root + index_status."""
+    def run(cmd, **kw):
+        argv = " ".join(cmd)
+        if "rev-parse" in argv:
+            return _R(0, str(root))
+        return _R(0 if indexed else 1)
+    return run
+
+
+def test_init_project_indexes_shared_across_agents(tmp_path, monkeypatch):
+    root = tmp_path / "proj"
+    root.mkdir()
+    git("init", cwd=root)
+    calls = []
+    monkeypatch.setattr(project, "_ensure_tool", lambda *a, **k: "/bin/cbm")
+    monkeypatch.setattr(project, "_init_openspec", lambda *a, **k: None)
+    monkeypatch.setattr(project, "_init_codebase", lambda *a, **k: None)
+    monkeypatch.setattr(project, "_init_codebase_omp", lambda *a, **k: None)
+    monkeypatch.setattr(
+        project.subprocess, "run",
+        lambda cmd, **kw: calls.append(" ".join(cmd)) or _fake_init_run(root, False)(cmd, **kw),
+    )
+    project.init_project(root, lambda p: True, tmp_path / "i.md", tmp_path / "oc.ts", tmp_path / "omp.ts", "opencode")
+    project.init_project(root, lambda p: True, tmp_path / "i.md", tmp_path / "oc.ts", tmp_path / "omp.ts", "omp")
+    assert sum(1 for c in calls if "index_status" in c) == 2  # reached for both agents
+
+
+def test_init_project_idempotent_skips_index(tmp_path, monkeypatch):
+    root = tmp_path / "proj"
+    root.mkdir()
+    git("init", cwd=root)
+    calls = []
+    monkeypatch.setattr(project, "_ensure_tool", lambda *a, **k: "/bin/cbm")
+    monkeypatch.setattr(project, "_init_openspec", lambda *a, **k: None)
+    monkeypatch.setattr(project, "_init_codebase", lambda *a, **k: None)
+    monkeypatch.setattr(project, "_init_codebase_omp", lambda *a, **k: None)
+    monkeypatch.setattr(
+        project.subprocess, "run",
+        lambda cmd, **kw: calls.append(" ".join(cmd)) or _fake_init_run(root, True)(cmd, **kw),
+    )
+    project.init_project(root, lambda p: True, tmp_path / "i.md", tmp_path / "oc.ts", tmp_path / "omp.ts", "opencode")
+    assert not any("index_repository" in c for c in calls)
+
+
 def test_ensure_tool_prompts_with_command_and_skips_on_decline(tmp_path, monkeypatch):
     monkeypatch.setenv("PATH", str(tmp_path))  # ensure the bin is "not installed"
     calls = []

@@ -218,6 +218,39 @@ def _set_runtime_flags(root: Path, mcp_bin: str) -> None:
         subprocess.run([mcp_bin, "config", "set", key, "true"], cwd=root, check=True)
 
 
+def _initial_index(root: Path, mcp_bin: str) -> None:
+    """Index the repo graph on first init (idempotent, best-effort)."""
+    # Skip when the project is already indexed, keeping re-runs a no-op. The
+    # project name mirrors the tool's derivation: resolved full path, leading
+    # slash stripped, '/' -> '-'. A mismatch on unusual paths only causes a
+    # redundant re-index, which is safe.
+    project_name = str(root.resolve()).lstrip("/").replace("/", "-")
+    status = subprocess.run(
+        [mcp_bin, "cli", "index_status", "--project", project_name],
+        cwd=root,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if status.returncode == 0:
+        print("  codebase-memory graph already indexed")
+        return
+
+    print("  indexing codebase-memory graph (full mode)...")
+    result = subprocess.run(
+        [mcp_bin, "cli", "index_repository", "--repo-path", str(root), "--mode", "full"],
+        cwd=root,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if result.returncode == 0:
+        print("  codebase-memory graph indexed")
+    else:
+        print("  warning: codebase-memory initial index failed; graph may be empty")
+        print("    re-run `setup install` to retry")
+
+
 def _reconcile_omp_denylist(confirm: Callable[[str], bool]) -> None:
     """
     Prompt to remove a stale user-level denylist entry for codebase-memory-mcp.
@@ -333,6 +366,8 @@ def init_project(  # pylint: disable=too-many-positional-arguments
         _init_codebase(root, mcp_bin, src_instruction, src_plugin)
     else:
         _init_codebase_omp(root, mcp_bin, src_instruction, src_omp_plugin, confirm)
+
+    _initial_index(root, mcp_bin)
 
 
 def uninstall_notice(cwd: Path) -> None:
