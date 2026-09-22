@@ -1,6 +1,6 @@
 # My AI Code Kit
 
-### Install
+## Install
 
 ```bash
 git clone https://github.com/DuckKota/my-ai-code-kit.git
@@ -19,13 +19,13 @@ cd my-ai-code-kit
 > - [Magic Context](https://github.com/cortexkit/magic-context)
 > - [Open Code Review](https://github.com/alibaba/open-code-review/blob/main/plugins/open-code-review/opencode/README.md)
 
-### The Complete Kit
+## Usage
 
 > [!tip]
 > My workflow is designed with a **command-first** approach. See my [CHEATSHEET.md](./CHEATSHEET.md) to see how I work.
 
 <details>
-<summary>The full kit...</summary>
+<summary>The Complete Kit...</summary>
 
 > **Commands**
 > 
