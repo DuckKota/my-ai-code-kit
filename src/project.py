@@ -117,9 +117,14 @@ def _ensure_tool(
     return path
 
 
-def _init_openspec(root: Path, openspec_bin: str) -> None:
+# The `--tools` value OpenSpec init is configured for, per agent id.
+OPENSPEC_TOOLS = {"opencode": "opencode", "omp": "oh-my-pi"}
+
+
+def _init_openspec(root: Path, openspec_bin: str, agent: str) -> None:
     """Initialize OpenSpec in the project (idempotent)."""
-    subprocess.run([openspec_bin, "init", "--tools", "opencode"], cwd=root, check=True)
+    tools = OPENSPEC_TOOLS[agent]
+    subprocess.run([openspec_bin, "init", "--tools", tools], cwd=root, check=True)
     print("  openspec initialized")
 
 
@@ -195,6 +200,7 @@ def init_project(
     confirm: Callable[[str], bool],
     src_instruction: Path,
     src_plugin: Path,
+    agent: str,
 ) -> None:
     """
     Initialize OpenSpec and codebase-memory-mcp for the project containing cwd.
@@ -202,11 +208,15 @@ def init_project(
     Runs only when cwd is inside a git repository; both tools' setup is
     idempotent, so it is safe to run on every install.
 
+    OpenSpec is initialized for every agent. codebase-memory-mcp is
+    opencode-only: it writes .opencode/ config, which is opencode-specific.
+
     Args:
         cwd: The working directory (per-project root is resolved from it).
         confirm: Prompt callback for installing missing tools.
         src_instruction: Path to the codebase-memory-mcp agents instructions.
         src_plugin: Path to the CodebaseMemoryReminder plugin.
+        agent: The agent id being installed.
     """
     root = git_root(cwd)
     if root is None:
@@ -217,7 +227,10 @@ def init_project(
 
     openspec_bin = _ensure_tool("OpenSpec", "openspec", OPENSPEC_INSTALL, confirm)
     if openspec_bin:
-        _init_openspec(root, openspec_bin)
+        _init_openspec(root, openspec_bin, agent)
+
+    if agent != "opencode":
+        return
 
     mcp_bin = _ensure_tool(
         "codebase-memory-mcp", "codebase-memory-mcp", CBM_INSTALL, confirm

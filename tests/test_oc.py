@@ -28,6 +28,15 @@ def git(*args, cwd=None):
     subprocess.run(["git", *args], cwd=cwd, check=True, capture_output=True)
 
 
+def _ok_run(cmd, **kw):
+    # Stand-in for subprocess.run in tests that only assert on the command.
+    class R:
+        returncode = 0
+        stdout = ""
+        stderr = ""
+    return R()
+
+
 def git_out(*args, cwd=None) -> str:
     return subprocess.run(
         ["git", *args], cwd=cwd, check=True, capture_output=True, text=True
@@ -889,10 +898,38 @@ def test_init_project_skips_outside_repo(tmp_path):
     # Not a git repo: init must no-op without invoking any tool.
     calls = []
     confirm = lambda prompt: calls.append(prompt) or True  # noqa: E731
-    project.init_project(tmp_path, confirm, tmp_path / "no.md", tmp_path / "no.ts")
+    project.init_project(tmp_path, confirm, tmp_path / "no.md", tmp_path / "no.ts", "opencode")
     assert calls == []
     assert not (tmp_path / "AGENTS.md").exists()
     assert not (tmp_path / ".opencode").exists()
+
+
+def test_init_openspec_uses_omp_tools(tmp_path, monkeypatch):
+    # OpenSpec must be initialized for Oh My Pi with its own `--tools` value,
+    # not the opencode one.
+    root = tmp_path / "proj"
+    root.mkdir()
+    calls = []
+    monkeypatch.setattr(
+        project.subprocess, "run",
+        lambda cmd, **kw: calls.append(cmd) or _ok_run(cmd, **kw),
+    )
+    project._init_openspec(root, "/bin/openspec", "omp")
+    assert calls[0] == ["/bin/openspec", "init", "--tools", "oh-my-pi"]
+
+
+def test_omp_install_dispatches_project_init(tmp_path, monkeypatch):
+    # `setup install --agent omp` must reach per-project init (OpenSpec) for
+    # Oh My Pi, not silently skip it.
+    calls = []
+    monkeypatch.setattr(kit.operations, "sync", lambda *a, **k: None)
+    monkeypatch.setattr(kit.project, "init_project", lambda *a, **k: calls.append(a))
+    monkeypatch.setattr(kit, "_bootstrap_shell_command", lambda: None)
+    kit._run_install(
+        manifest.load(MANIFEST), tmp_path, force=True, assume_yes=True,
+        skip_init=False, agent="omp",
+    )
+    assert calls, "omp install must call per-project init"
 
 
 def test_ensure_tool_prompts_with_command_and_skips_on_decline(tmp_path, monkeypatch):

@@ -233,10 +233,11 @@ def _run_install(
     # stale symlinks that point into src/ but are no longer in the manifest.
     operations.sync(manifest_data, ROOT, config_dir, force, prune=prune, agent=agent)
 
-    # Per-project tool init (OpenSpec, codebase-memory-mcp). OpenCode-only for
-    # now; OMP per-project init is deferred. Only runs when the working
-    # directory is inside a git repository; both tools' setup is idempotent.
-    if agent == "opencode" and not skip_init:
+    # Per-project tool init (OpenSpec, codebase-memory-mcp). OpenSpec runs for
+    # every agent; codebase-memory-mcp is opencode-only. Only runs when the
+    # working directory is inside a git repository; both tools' setup is
+    # idempotent.
+    if not skip_init:
         project.init_project(
             Path.cwd(),
             # Never bypassed by --yes: installing a binary is a system-level
@@ -244,6 +245,7 @@ def _run_install(
             lambda prompt: _confirm(prompt, False),
             ROOT / "src" / "instructions" / "codebase-memory-mcp-agents.md",
             ROOT / "src" / "plugins" / "CodebaseMemoryReminder.ts",
+            agent=agent,
         )
 
     # Optional shell command bootstrap. Persistent user-controlled change,
