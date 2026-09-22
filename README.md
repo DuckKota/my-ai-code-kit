@@ -22,7 +22,7 @@ cd my-ai-code-kit
 ### The Complete Kit
 
 > [!tip]
-> My workflow is designed with a **command-first** approach. See my [CHEATSHEET.md](./CHEATSHEET.md).
+> My workflow is designed with a **command-first** approach. See my [CHEATSHEET.md](./CHEATSHEET.md) to see how I work.
 
 <details>
 <summary>The full kit...</summary>
