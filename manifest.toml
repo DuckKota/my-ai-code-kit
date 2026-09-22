@@ -80,6 +80,18 @@ source_sha = "c55ee46073ed923f86ce59a5eb3b6d895095d1b7"
 src = "src/commands/handoff.md"
 target = "commands/handoff.md"
 
+[[artifacts]]
+name = "humanizer"
+agents = ["opencode", "omp"]
+operation = "symlink"
+type = "command"
+provenance = "vendor"
+source_repo = "https://github.com/shir-danishyar/humanize"
+source_path = "commands/humanizer.md"
+source_sha = "024aa193966341e0706e96f0277f914092bed2c7"
+src = "src/commands/humanizer.md"
+target = "commands/humanizer.md"
+
 # ------------------------------------------------------------------- skills
 [[artifacts]]
 name = "diagnosing-bugs"
@@ -185,6 +197,42 @@ type = "skill"
 provenance = "original"
 src = "src/skills/glab"
 target = "skills/glab"
+
+[[artifacts]]
+name = "humanize-writing"
+agents = ["opencode", "omp"]
+operation = "symlink"
+type = "skill"
+provenance = "vendor"
+source_repo = "https://github.com/shir-danishyar/humanize"
+source_path = "SKILL.md"
+source_sha = "024aa193966341e0706e96f0277f914092bed2c7"
+src = "src/skills/humanize-writing/SKILL.md"
+target = "skills/humanize-writing/SKILL.md"
+
+[[artifacts]]
+name = "humanize-writing-references"
+agents = ["opencode", "omp"]
+operation = "symlink"
+type = "skill"
+provenance = "vendor"
+source_repo = "https://github.com/shir-danishyar/humanize"
+source_path = "references"
+source_sha = "024aa193966341e0706e96f0277f914092bed2c7"
+src = "src/skills/humanize-writing/references"
+target = "skills/humanize-writing/references"
+
+[[artifacts]]
+name = "humanize-writing-scripts"
+agents = ["opencode", "omp"]
+operation = "symlink"
+type = "skill"
+provenance = "vendor"
+source_repo = "https://github.com/shir-danishyar/humanize"
+source_path = "scripts"
+source_sha = "024aa193966341e0706e96f0277f914092bed2c7"
+src = "src/skills/humanize-writing/scripts"
+target = "skills/humanize-writing/scripts"
 
 # ------------------------------------------------------------ instructions
 [[artifacts]]

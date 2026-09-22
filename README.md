@@ -7,7 +7,8 @@ git clone https://github.com/DuckKota/my-ai-code-kit.git
 cd my-ai-code-kit
 ./bin/setup install   # requires python 3.9+
 
-# Inside a git repository, `setup install` also installs and initializes OpenSpec and codebase-memory-mcp for that project (prompts first; idempotent).
+# Inside a git repository, `setup install` also installs and initializes
+# OpenSpec and codebase-memory-mcp for that project (prompts first; idempotent).
 ```
 
 > [!important]
@@ -21,52 +22,15 @@ cd my-ai-code-kit
 ### The Complete Kit
 
 > [!tip]
-> My workflow is designed with a "command first" approach. My personal OMP command reference lives in [CHEATSHEET.md](./CHEATSHEET.md).
+> My workflow is designed with a "command first" approach. See my [CHEATSHEET.md](./CHEATSHEET.md).
 
+| Commands | Skills |
+|---|---|
+| [`/commit-message`](./src/commands/commit-message.md) · [`/grill-me`](./src/commands/grill-me.md) · [`/fix`](./src/commands/fix.md) · [`/handoff`](./src/commands/handoff.md) · [`/glab-mr`](./src/commands/glab-mr.md) · [`/humanizer`](./src/commands/humanizer.md) · [`/ponytail`](https://ponytail.dev/) · [`/ponytail-review`](https://ponytail.dev/) | [`diagnosing-bugs`](./src/skills/diagnosing-bugs/) · [`codebase-design`](./src/skills/codebase-design/) · [`domain-modeling`](./src/skills/domain-modeling/) · [`humanize-writing`](./src/skills/humanize-writing/) · [`improve-codebase-architecture`](./src/skills/improve-codebase-architecture/) · [`using-git-worktrees`](./src/skills/using-git-worktrees/) · [`verification-before-completion`](./src/skills/verification-before-completion/) |
 
-
-<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-
-<div>
-
-> [!NOTE]
-> First note
-
-</div>
-
-<div>
-
-> [!NOTE]
-> Second note
-
-</div>
-
-<div>
-
-> [!NOTE]
-> Third note
-
-</div>
-
-<div>
-
-> [!NOTE]
-> Fourth note
-
-</div>
-
-</div>
-
-
-
-**Commands:** [/commit-message](./src/commands/commit-message.md) • [/grill-me](./src/commands/grill-me.md) • [/fix](./src/commands/fix.md) • [/handoff](./src/commands/handoff.md) • [/glab-mr](./src/commands/glab-mr.md) • [/ponytail](https://ponytail.dev/) • [/ponytail-review](https://ponytail.dev/)
-
-**Skills:** [diagnosing-bugs](./src/skills/diagnosing-bugs/) • [codebase-design](./src/skills/codebase-design/) • [domain-modeling](./src/skills/domain-modeling/) • [improve-codebase-architecture](./src/skills/improve-codebase-architecture/) • [using-git-worktrees](./src/skills/using-git-worktrees/) • [verification-before-completion](./src/skills/verification-before-completion/)
-
-**Tools:** [codebase-memory-mcp](https://deusdata.github.io/codebase-memory-mcp/) • [OpenSpec](https://openspec.dev/)
-
-**Other:** [caveman](./src/instructions/caveman.md) • [batch-file-writes](./src/instructions/file-edit-limits.md)
-
+| Tools | Other |
+|---|---|
+| [`codebase-memory-mcp`](https://deusdata.github.io/codebase-memory-mcp/) · [`OpenSpec`](https://openspec.dev/) | [`caveman`](./src/instructions/caveman.md) · [`batch-file-writes`](./src/instructions/file-edit-limits.md) |
 
 ---
 

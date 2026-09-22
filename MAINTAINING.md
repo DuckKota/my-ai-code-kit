@@ -43,6 +43,7 @@ that file has a `provenance` of `original`, `vendor`, or `fork`:
 | --- | --- | --- |
 | [mattpocock/skills](https://github.com/mattpocock/skills) | **Commands:**<br>`/grill-me`, `/handoff`<br><br>**Skills:**<br>`diagnosing-bugs`, `codebase-design`, `domain-modeling`, `improve-codebase-architecture`, `grilling`, `writing-for-agents` | vendor |
 | [obra/superpowers](https://github.com/obra/superpowers) | **Skills:**<br>`using-git-worktrees`, `verification-before-completion` | vendor |
+| [shir-danishyar/humanize](https://github.com/shir-danishyar/humanize) | **Command:**<br>`/humanizer`<br><br>**Skill:**<br>`humanize-writing` | vendor |
 
 ---
 
@@ -94,6 +95,10 @@ nothing local to protect. See `grilling` below.
 #### handoff — `vendor` (mattpocock)
 Stolen verbatim; used as `/handoff`. No local changes.
 
+#### humanizer — `vendor` (shir-danishyar/humanize)
+Single-file command; cleanly vendorable. Pulls `commands/humanizer.md`
+verbatim.
+
 #### commit-message — `original`
 Our `/commit-message` command + `verify-commit` validation script. The command
 references the installed script path at install time.
@@ -119,6 +124,23 @@ Pristine copies.
 #### glab — `original`
 Our own skill for working with GitLab via `glab` CLI (mirrors the `glab-mr`
 command). No upstream.
+
+#### humanize-writing — `vendor` (shir-danishyar/humanize)
+The upstream repo keeps `SKILL.md` at the repo root, so the skill can't live
+in one vendorable subdir. Instead it's assembled from three vendor artifacts,
+each mirroring one upstream path into `src/skills/humanize-writing/`:
+
+- `humanize-writing` → `SKILL.md`
+- `humanize-writing-references` → `references/`
+- `humanize-writing-scripts` → `scripts/`
+
+Together they install as the `skills/humanize-writing/` skill directory.
+Pulling upstream changes is a plain `setup vendor`; the skill's own `tests/`
+stay upstream (we don't vendor them).
+
+#### humanizer — `vendor` (shir-danishyar/humanize)
+The `/humanizer` command (`commands/humanizer.md`); installs as a slash
+command. Vendored as its own single-file artifact (see Commands above).
 
 ### Themes & instructions
 
