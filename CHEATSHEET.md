@@ -9,7 +9,7 @@ I don't describe what I want in words and hope the agent figures it out. I drive
 
 ## Feature flow
 
-For new features, design-reviewable changes, and refactors, one idea walks through sharpen → spec → plan-review → implement → review → close. Run the following commands in the following order.
+For new features, design-reviewable changes, and refactors, one idea walks through sharpen → spec → plan-review → implement → code-review → close. Run the following commands in the following order.
 
 | Stage | Command | What it does |
 | --- | --- | --- |
