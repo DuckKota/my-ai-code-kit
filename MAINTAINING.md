@@ -172,5 +172,5 @@ in the repo root. Idempotent.
 Both are per-project, set up by `ocinit` (not the manifest — see
 `setup install` running inside a git repo). `ocinit.py` prepends the
 codebase-memory instructions to `AGENTS.md`, copies
-`CodebaseMemoryReminder.ts` into `.opencode/plugins`, and merges the MCP
+`CodebaseMemoryReminder.oc.ts` into `.opencode/plugins`, and merges the MCP
 server into `.opencode/opencode.json`, then sets `auto_index` / `auto_watch`.

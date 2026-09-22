@@ -152,6 +152,19 @@ def test_uninstall_notice_reports_project_init(tmp_path, capsys):
     assert "codebase-memory-mcp" in capsys.readouterr().out
 
 
+def test_uninstall_notice_reports_omp_project_init(tmp_path, capsys):
+    # An Oh My Pi install leaves .omp/ artifacts; the notice must surface them.
+    repo = tmp_path / "proj"
+    repo.mkdir()
+    git("init", cwd=repo)
+    (repo / ".omp" / "extensions").mkdir(parents=True)
+    (repo / ".omp" / "extensions" / "CodebaseMemoryReminder.ts").write_text("x")
+    project.uninstall_notice(repo)
+    out = capsys.readouterr().out
+    assert "codebase-memory-mcp" in out
+    assert ".omp" in out
+
+
 def test_uninstall_notice_silent_without_init(tmp_path, capsys):
     # A clean project (and a non-git dir) triggers no notice.
     repo = tmp_path / "proj"
@@ -862,11 +875,11 @@ def test_prepend_instruction_is_idempotent(tmp_path):
 
 
 def test_install_plugin(tmp_path):
-    src = tmp_path / "CodebaseMemoryReminder.ts"
+    src = tmp_path / "CodebaseMemoryReminder.oc.ts"
     src.write_text("// plugin")
     root = tmp_path / "proj"
     root.mkdir()
-    project._install_plugin(root, src)
+    project._install_plugin(root, Path(".opencode") / "plugins", src)
     assert (root / ".opencode" / "plugins" / "CodebaseMemoryReminder.ts").read_text() == (
         "// plugin"
     )
@@ -898,7 +911,9 @@ def test_init_project_skips_outside_repo(tmp_path):
     # Not a git repo: init must no-op without invoking any tool.
     calls = []
     confirm = lambda prompt: calls.append(prompt) or True  # noqa: E731
-    project.init_project(tmp_path, confirm, tmp_path / "no.md", tmp_path / "no.ts", "opencode")
+    project.init_project(
+        tmp_path, confirm, tmp_path / "no.md", tmp_path / "no.ts", tmp_path / "no.omp.ts", "opencode"
+    )
     assert calls == []
     assert not (tmp_path / "AGENTS.md").exists()
     assert not (tmp_path / ".opencode").exists()
@@ -930,6 +945,106 @@ def test_omp_install_dispatches_project_init(tmp_path, monkeypatch):
         skip_init=False, agent="omp",
     )
     assert calls, "omp install must call per-project init"
+
+
+def _write_instruction(tmp_path) -> Path:
+    src = tmp_path / "instruction.md"
+    src.write_text(
+        "<!-- codebase-memory-mcp:start -->\n# block\n<!-- codebase-memory-mcp:end -->\n"
+    )
+    return src
+
+
+def _write_omp_plugin(tmp_path) -> Path:
+    plugin = tmp_path / "CodebaseMemoryReminder.omp.ts"
+    plugin.write_text("// omp reminder extension\n")
+    return plugin
+
+
+def test_omp_init_writes_mcp_json(tmp_path, monkeypatch):
+    root = tmp_path / "proj"
+    root.mkdir()
+    monkeypatch.setattr(project.subprocess, "run", _ok_run)
+    monkeypatch.setattr(project, "OMP_USER_MCP", tmp_path / "user" / "mcp.json")
+    project._init_codebase_omp(root, "/bin/cbm", _write_instruction(tmp_path), _write_omp_plugin(tmp_path), lambda p: True)
+    data = json.loads((root / ".omp" / "mcp.json").read_text())
+    assert data["mcpServers"]["codebase-memory-mcp"] == {
+        "enabled": True,
+        "command": "/bin/cbm",
+    }
+
+
+def test_omp_init_installs_extension_and_instruction(tmp_path, monkeypatch):
+    root = tmp_path / "proj"
+    root.mkdir()
+    monkeypatch.setattr(project.subprocess, "run", _ok_run)
+    monkeypatch.setattr(project, "OMP_USER_MCP", tmp_path / "user" / "mcp.json")
+    project._init_codebase_omp(root, "/bin/cbm", _write_instruction(tmp_path), _write_omp_plugin(tmp_path), lambda p: True)
+    assert (
+        root / ".omp" / "extensions" / "CodebaseMemoryReminder.ts"
+    ).read_text() == "// omp reminder extension\n"
+    assert (root / "AGENTS.md").read_text().startswith("<!-- codebase-memory-mcp:start -->")
+
+
+def test_omp_init_does_not_touch_opencode(tmp_path, monkeypatch):
+    root = tmp_path / "proj"
+    root.mkdir()
+    monkeypatch.setattr(project.subprocess, "run", _ok_run)
+    monkeypatch.setattr(project, "OMP_USER_MCP", tmp_path / "user" / "mcp.json")
+    project._init_codebase_omp(root, "/bin/cbm", _write_instruction(tmp_path), _write_omp_plugin(tmp_path), lambda p: True)
+    assert not (root / ".opencode").exists()
+
+
+def test_omp_denylist_accept_removes_entry(tmp_path, monkeypatch, capsys):
+    user_mcp = tmp_path / "user" / "mcp.json"
+    user_mcp.parent.mkdir(parents=True)
+    user_mcp.write_text(json.dumps({"disabledServers": ["codebase-memory-mcp"]}))
+    root = tmp_path / "proj"
+    root.mkdir()
+    monkeypatch.setattr(project.subprocess, "run", _ok_run)
+    monkeypatch.setattr(project, "OMP_USER_MCP", user_mcp)
+    calls = []
+    project._init_codebase_omp(
+        root, "/bin/cbm", _write_instruction(tmp_path), _write_omp_plugin(tmp_path),
+        lambda p: calls.append(p) or True,
+    )
+    assert calls, "denylist entry must prompt"
+    data = json.loads(user_mcp.read_text())
+    assert "codebase-memory-mcp" not in data["disabledServers"]
+
+
+def test_omp_denylist_decline_reports_unavailable(tmp_path, monkeypatch, capsys):
+    user_mcp = tmp_path / "user" / "mcp.json"
+    user_mcp.parent.mkdir(parents=True)
+    user_mcp.write_text(json.dumps({"disabledServers": ["codebase-memory-mcp"]}))
+    root = tmp_path / "proj"
+    root.mkdir()
+    monkeypatch.setattr(project.subprocess, "run", _ok_run)
+    monkeypatch.setattr(project, "OMP_USER_MCP", user_mcp)
+    project._init_codebase_omp(
+        root, "/bin/cbm", _write_instruction(tmp_path), _write_omp_plugin(tmp_path),
+        lambda p: False,
+    )
+    data = json.loads(user_mcp.read_text())
+    assert "codebase-memory-mcp" in data["disabledServers"]  # untouched
+    assert "unavailable" in capsys.readouterr().out
+
+
+def test_omp_init_is_idempotent(tmp_path, monkeypatch):
+    root = tmp_path / "proj"
+    root.mkdir()
+    monkeypatch.setattr(project.subprocess, "run", _ok_run)
+    monkeypatch.setattr(project, "OMP_USER_MCP", tmp_path / "user" / "mcp.json")
+    plugin = _write_omp_plugin(tmp_path)
+    instruction = _write_instruction(tmp_path)
+    project._init_codebase_omp(root, "/bin/cbm", instruction, plugin, lambda p: True)
+    mcp_before = (root / ".omp" / "mcp.json").read_text()
+    ext_before = (root / ".omp" / "extensions" / "CodebaseMemoryReminder.ts").read_text()
+    agents_before = (root / "AGENTS.md").read_text()
+    project._init_codebase_omp(root, "/bin/cbm", instruction, plugin, lambda p: True)
+    assert (root / ".omp" / "mcp.json").read_text() == mcp_before
+    assert (root / ".omp" / "extensions" / "CodebaseMemoryReminder.ts").read_text() == ext_before
+    assert (root / "AGENTS.md").read_text() == agents_before
 
 
 def test_ensure_tool_prompts_with_command_and_skips_on_decline(tmp_path, monkeypatch):

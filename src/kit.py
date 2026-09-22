@@ -234,9 +234,9 @@ def _run_install(
     operations.sync(manifest_data, ROOT, config_dir, force, prune=prune, agent=agent)
 
     # Per-project tool init (OpenSpec, codebase-memory-mcp). OpenSpec runs for
-    # every agent; codebase-memory-mcp is opencode-only. Only runs when the
-    # working directory is inside a git repository; both tools' setup is
-    # idempotent.
+    # every agent; codebase-memory-mcp is initialized per agent into its own
+    # config (opencode: .opencode/, omp: .omp/). Only runs when the working
+    # directory is inside a git repository; both tools' setup is idempotent.
     if not skip_init:
         project.init_project(
             Path.cwd(),
@@ -244,7 +244,8 @@ def _run_install(
             # change that must always be an explicit user choice.
             lambda prompt: _confirm(prompt, False),
             ROOT / "src" / "instructions" / "codebase-memory-mcp-agents.md",
-            ROOT / "src" / "plugins" / "CodebaseMemoryReminder.ts",
+            ROOT / "src" / "plugins" / "CodebaseMemoryReminder.oc.ts",
+            ROOT / "src" / "plugins" / "CodebaseMemoryReminder.omp.ts",
             agent=agent,
         )
 
