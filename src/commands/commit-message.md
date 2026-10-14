@@ -193,7 +193,45 @@ Implements #456
 Closes #789
 ```
 
-**Done when** type, scope, summary, body, and footer are all decided.
+---
+
+### Breaking Changes
+
+A breaking change removes or alters existing behavior such that users must
+change their code, configuration, or usage.
+
+Mark a breaking change in both places, both required:
+
+1. Append `!` to the type or scope in the subject:
+
+   - `feat!: <summary>`
+   - `feat(api)!: <summary>`
+
+2. Add a `BREAKING CHANGE:` footer above the issue keyword:
+
+   ```
+   BREAKING CHANGE: <what broke and the migration required>
+   ```
+
+The `BREAKING CHANGE:` description is imperative, lowercase start, no
+trailing period, wrapped at 72 characters. It names what was removed or
+changed, not how the diff did it.
+
+Example:
+
+```text
+refactor!: streaming formatter distribution
+
+- replace custom options and harness include with direct forwarding
+- rebuild container and release layout
+
+BREAKING CHANGE: replace legacy CLI options and harness include
+
+Closes #20
+```
+
+**Done when** type, scope, summary, body, footer, and breaking-change
+markers are all decided.
 
 ---
 
@@ -237,6 +275,8 @@ Before responding, validate each component against the rules above:
 - Body explains *why* not *what* (diff already shows what)?
 - Footer keyword matches type (Fixes/Implements/Closes)?
 - Issue number present and real?
+- Breaking change → `!` in the subject and a `BREAKING CHANGE:` footer
+  above the issue keyword?
 
 If any rule is violated: fix it, then re-run validation before continuing.
 
@@ -271,6 +311,9 @@ Without scope:
 
 <footer>
 ```
+
+For a breaking change, append `!` to the type or scope in the subject and
+place the `BREAKING CHANGE:` footer above the issue keyword.
 
 ## 2. Git command
 
