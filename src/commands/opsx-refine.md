@@ -115,6 +115,30 @@ Do not use refinement as an excuse to clean up unrelated code or redesign neighb
 
 If unrelated problems are discovered, mention them only when they materially affect the proposed change.
 
+
+### Persist Implementation-Relevant Context
+
+Assume implementation may happen later in a fresh AI context with no access to this refinement conversation or final response.
+
+Any information that is expected to influence implementation must be persisted in the OpenSpec change itself.
+
+Do not rely on conversational context to carry forward:
+- implementation watchpoints
+- important assumptions
+- investigation targets
+- verification strategy
+- sequencing constraints
+- skill recommendations
+- other execution guidance that would materially affect how the change is implemented
+
+Place durable guidance in the most appropriate existing OpenSpec artifact.
+
+Prefer updating authoritative artifacts such as the design, specifications, or task list over creating a separate handoff document.
+
+Create a supplementary artifact only when the guidance is important, does not fit naturally in an existing authoritative artifact, and the schema permits it.
+
+The command's final response is only a summary for the current user. It must not contain implementation-critical information that was not also persisted in the OpenSpec change.
+
 ## Detailed Review Guidelines
 
 ### Refine Requirements and Specifications
@@ -179,7 +203,7 @@ Do not invent commands, tests, or tools that have not been verified to exist in 
 
 ### Check Implementation Readiness
 
-After reviewing the proposal itself, determine whether an implementation agent could begin work using the refined OpenSpec change without needing to rediscover important planning context.
+After reviewing the proposal itself, determine whether an implementation agent could begin work using only the repository and the refined OpenSpec change, without access to this conversation and without needing to rediscover important planning context.
 
 Look for missing information such as:
 - important repository conventions
@@ -195,33 +219,63 @@ Whenever possible, encode durable information in the appropriate authoritative O
 
 ### Plan Skill Usage Deliberately
 
-Inspect the skills available in the current environment when doing so is useful.
+Inspect the skills available in the current environment as part of every refinement pass.
 
 Do not assume any specific skill exists.
 
 Do not maintain or rely on a hard-coded list of skills.
 
-Reason from the implementation problem to a skill, not from the skill catalog to possible uses.
+Use a discovery funnel:
 
-The question is:
-> What specific implementation problem may benefit from specialized guidance?
+1. Discover the available skill names and descriptions.
+2. Shortlist skills that plausibly match the actual implementation work.
+3. Inspect the detailed guidance only for plausible matches.
+4. Classify each useful skill as intrinsically applicable or conditionally applicable.
+5. Record only the skills that are likely to improve implementation quality.
 
-Not:
-> Which available skills can be associated with this change?
+Be exhaustive in discovery, but selective in recommendation.
 
-A skill recommendation must solve a concrete problem or have a clear trigger condition.
-
-Prefer no recommendation over a speculative recommendation.
+Do not dump the entire skill catalog into the plan.
 
 Do not recommend skills merely to make the refinement appear thorough.
 
-#### Treat Skill Recommendations as Conditional
+#### Identify Intrinsically Applicable Skills
 
-Skill planning is guidance, not a binding execution plan.
+Some skills are useful because of the nature of the work itself.
 
-Implementation may reveal information that was unavailable during refinement.
+A skill is intrinsically applicable when the planned implementation directly falls within the skill's specialized domain or method and that guidance is likely to materially improve execution.
 
-When a skill appears useful, record:
+Examples include:
+- a frontend design skill for work whose primary deliverable is a substantial user interface
+- a database migration skill for a change that includes schema migration
+- an API design skill for a change that creates or materially changes a public API
+
+These are examples of applicability, not a hard-coded skill list.
+
+For an intrinsically applicable skill, the planned work itself is the trigger. Do not require an additional failure condition or unusual implementation event.
+
+Record:
+- the skill
+- the part of the planned work it directly applies to
+- why its specialized guidance is likely to improve implementation
+
+For example:
+
+```text
+Skill: <skill-name>
+
+Applies to:
+<specific planned work that directly falls within the skill's domain>
+
+Purpose:
+<why the skill's guidance is likely to improve that work>
+```
+
+#### Identify Conditionally Applicable Skills
+
+Other skills become useful only if a specific condition arises during implementation.
+
+For a conditionally applicable skill, record:
 - the skill
 - the specific concern it addresses
 - the observable condition under which it should be used
@@ -252,15 +306,44 @@ moving responsibility between components, or creating a dependency
 relationship that does not already exist.
 ```
 
-Do not require implementation to use a skill simply because it was predicted here.
+#### Persist Skill Guidance for Implementation
 
-Later repository evidence should always override earlier planning predictions.
+Any skill identified as useful must be recorded in an OpenSpec artifact that the implementation agent is expected to read.
+
+Do not leave skill guidance only in the refinement summary.
+
+Place skill guidance where it best fits:
+- task-specific skill guidance should normally live with the relevant implementation task
+- cross-cutting skill guidance should normally live in the design or another appropriate implementation-guidance section
+- avoid creating a dedicated skill artifact unless there is a concrete reason the existing artifacts cannot represent the guidance clearly
+
+For intrinsically applicable skills, record what planned work the skill applies to and why it is useful.
+
+For conditionally applicable skills, record the observable trigger and purpose.
+
+The implementation agent should be able to discover the intended skill usage from the OpenSpec change alone.
+
+#### Skill Planning Is Guidance, Not a Mandate
+
+Do not require implementation to use a skill simply because it was identified during refinement.
+
+Implementation may reveal information that was unavailable during planning.
+
+A skill judged intrinsically applicable may turn out not to be useful once the real implementation path is understood.
+
+A conditional skill may become useful even if its trigger was not anticipated exactly.
+
+Implementation may also discover a useful skill that refinement did not predict.
+
+Later repository and implementation evidence should always override earlier planning predictions.
 
 ### Create Supplementary Implementation Guidance Only When Useful
 
 Most refinement should happen directly in the authoritative OpenSpec artifacts.
 
 If useful implementation guidance remains that does not belong naturally in the proposal, design, specs, or tasks, record it concisely in an appropriate OpenSpec artifact.
+
+Any such guidance that is expected to affect implementation must be persisted before refinement is considered complete.
 
 Do not create supplementary documentation merely because this command was invoked.
 
@@ -354,7 +437,11 @@ The refinement is complete when:
 - tasks are clear, sensibly scoped, and correctly ordered
 - meaningful verification is represented
 - important implementation risks are captured
-- useful skills have been identified conditionally when appropriate
+- all implementation-relevant refinement guidance has been persisted in the OpenSpec change
+- the change is understandable and actionable from a fresh implementation context without relying on this conversation
+- available skills have been deliberately inspected
+- intrinsically applicable skills have been identified where the planned work directly benefits from them
+- conditionally applicable skills have clear observable triggers where appropriate
 - no skills have been recommended merely because they are available
 - no unnecessary artifacts or planning material have been created
 - no meaningful refinement remains
@@ -375,6 +462,7 @@ Stop when these conditions are satisfied. Do not continue polishing for its own 
 - Updated <artifact> to resolve <issue/contradiction>
 - Removed over-engineering from <design aspect>
 - Adjusted task sequencing for dependency safety
+- Persisted implementation-relevant guidance in <artifact>
 
 ### Important Assumptions, Risks, or Gaps Discovered
 - <Discovered gaps or risks>
@@ -382,7 +470,12 @@ Stop when these conditions are satisfied. Do not continue polishing for its own 
 ### Implementation Guidance & Watchpoints
 - <Investigation targets, watchpoints, or verification strategy>
 
-### Conditional Skills Identified
+### Skills Identified
+
+**Intrinsically Applicable**
+- **<skill-name>**: Applies to <specific planned work>. Purpose: <why its guidance should improve implementation>.
+
+**Conditionally Applicable**
 - **<skill-name>**: Triggered if <observable condition>. Purpose: <why it helps>.
 
 The change plan is now robust and ready for implementation via `/opsx-apply`.
@@ -405,5 +498,6 @@ Ready for implementation via `/opsx-apply`.
 - **Do NOT implement anything.** You are reviewing and refining documentation/artifacts only.
 - **Do NOT overproduce.** If the proposal is already sound, preserve it. Do not make edits just to show activity.
 - **Do NOT orchestrate.** Keep this command self-contained; do not inject workflow history or assumptions about preceding/succeeding commands.
-- **Do not maintain hard-coded skill lists.** Reason dynamically from implementation problems to skills.
+- **Do NOT rely on chat continuity.** Assume implementation may occur in a fresh context. Persist any implementation-relevant guidance in the OpenSpec change itself.
+- **Do not maintain hard-coded skill lists.** Discover the current skill catalog dynamically, shortlist by relevance, and distinguish intrinsic applicability from conditional applicability.
 - **Handle uncertainty explicitly.** If an assumption cannot be checked yet, record it clearly rather than guessing.
