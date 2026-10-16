@@ -34,6 +34,7 @@ cd my-ai-code-kit
 > - [`/fix`](./src/commands/fix.md)
 > - [`/handoff`](./src/commands/handoff.md)
 > - [`/humanizer`](./src/commands/humanizer.md)
+> - [`/opsx-refine`](./src/commands/opsx-refine.md)
 > - [`/ponytail`](https://ponytail.dev/)
 > - [`/ponytail-review`](https://ponytail.dev/)
 
@@ -42,6 +43,7 @@ cd my-ai-code-kit
 > - [`diagnosing-bugs`](./src/skills/diagnosing-bugs/)
 > - [`codebase-design`](./src/skills/codebase-design/)
 > - [`domain-modeling`](./src/skills/domain-modeling/)
+> - [`frontend-design`](./src/skills/frontend-design/)
 > - [`humanize-writing`](./src/skills/humanize-writing/)
 > - [`improve-codebase-architecture`](./src/skills/improve-codebase-architecture/)
 > - [`using-git-worktrees`](./src/skills/using-git-worktrees/)

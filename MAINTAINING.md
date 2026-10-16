@@ -44,6 +44,7 @@ that file has a `provenance` of `original`, `vendor`, or `fork`:
 | [mattpocock/skills](https://github.com/mattpocock/skills) | **Commands:**<br>`/grill-me`, `/handoff`<br><br>**Skills:**<br>`diagnosing-bugs`, `codebase-design`, `domain-modeling`, `improve-codebase-architecture`, `grilling`, `writing-for-agents` | vendor |
 | [obra/superpowers](https://github.com/obra/superpowers) | **Skills:**<br>`using-git-worktrees`, `verification-before-completion` | vendor |
 | [shir-danishyar/humanize](https://github.com/shir-danishyar/humanize) | **Command:**<br>`/humanizer`<br><br>**Skill:**<br>`humanize-writing` | vendor |
+| [anthropics/skills](https://github.com/anthropics/skills) | **Skill:**<br>`frontend-design` | vendor |
 
 ---
 
@@ -109,6 +110,12 @@ Our `/fix` command (renamed from `/debug`).
 #### glab-mr — `original`
 Our `/glab-mr` command for creating merge requests.
 
+#### opsx-refine — `original`
+Our `/opsx-refine` command: a deliberate second planning pass over an existing
+OpenSpec change. Slots after `/opsx-propose` (and plan review) and before
+`/opsx-apply`. Uses only the `description:` frontmatter, matching the generated
+`opsx-*` command family.
+
 ### Skills
 
 #### grilling — `vendor` (mattpocock)
@@ -141,6 +148,12 @@ stay upstream (we don't vendor them).
 #### humanizer — `vendor` (shir-danishyar/humanize)
 The `/humanizer` command (`commands/humanizer.md`); installs as a slash
 command. Vendored as its own single-file artifact (see Commands above).
+
+#### frontend-design — `vendor` (anthropics/skills)
+Pristine copy of the whole `skills/frontend-design` directory (`SKILL.md` plus
+the `LICENSE.txt` its frontmatter references). Vendored as a directory artifact
+so `setup vendor` mirrors upstream wholesale. Pulling upstream changes is a
+plain `setup vendor`.
 
 ### Themes & instructions
 

@@ -92,6 +92,15 @@ source_sha = "024aa193966341e0706e96f0277f914092bed2c7"
 src = "src/commands/humanizer.md"
 target = "commands/humanizer.md"
 
+[[artifacts]]
+name = "opsx-refine"
+agents = ["opencode", "omp"]
+operation = "symlink"
+type = "command"
+provenance = "original"
+src = "src/commands/opsx-refine.md"
+target = "commands/opsx-refine.md"
+
 # ------------------------------------------------------------------- skills
 [[artifacts]]
 name = "diagnosing-bugs"
@@ -233,6 +242,18 @@ source_path = "scripts"
 source_sha = "024aa193966341e0706e96f0277f914092bed2c7"
 src = "src/skills/humanize-writing/scripts"
 target = "skills/humanize-writing/scripts"
+
+[[artifacts]]
+name = "frontend-design"
+agents = ["opencode", "omp"]
+operation = "symlink"
+type = "skill"
+provenance = "vendor"
+source_repo = "https://github.com/anthropics/skills"
+source_path = "skills/frontend-design"
+source_sha = "dbd4588f9e1033efb41dad4bef2f7947c8993d44"
+src = "src/skills/frontend-design"
+target = "skills/frontend-design"
 
 # ------------------------------------------------------------ instructions
 [[artifacts]]
