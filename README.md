@@ -11,6 +11,8 @@ cd my-ai-code-kit
 # OpenSpec and codebase-memory-mcp for that project (prompts first; idempotent).
 ```
 
+OpenCode support requires V2.
+
 > [!important]
 > Manually install the following:
 >

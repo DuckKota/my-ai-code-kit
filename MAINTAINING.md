@@ -6,6 +6,9 @@ the setup tool itself). Here we record the *content* decisions: what each
 artifact is, where it came from, what we customized on top, and how to merge
 upstream changes back in.
 
+OpenCode support requires V2. V1 config and plugin APIs are not supported.
+The notes below take that as given.
+
 ## Usage
 
 | Command | What it does |
@@ -169,10 +172,11 @@ Our own GitHub-dark theme. Not the default anymore; kept as a fallback theme
 
 #### poimandres / poimandres-turquoise-expanded / poimandres-accessible — `vendor`
 Vendored from [ajaxdude/opencode-ai-poimandres-theme](https://github.com/ajaxdude/opencode-ai-poimandres-theme)
-(`.opencode/themes/*.json`). `poimandres-turquoise-expanded` is the default
-and sets `theme` in `tui.json`. The Oh My Pi equivalent
-is `omp-github-dark` (installed as `themes/github-dark.json`; selected via a
-`config-merge` into `config.yml`).
+(`.opencode/themes/*.json`), kept exactly as upstream ships them. The default
+theme is selected by the `theme-default` artifact (`config-merge` into
+`cli.json`, key `theme.name`). The Oh My Pi equivalent is `omp-github-dark`
+(installed as `themes/github-dark.json`; selected via a `config-merge` into
+`config.yml`).
 
 ### Per-project
 

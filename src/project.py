@@ -173,19 +173,37 @@ def _merge_mcp_config(root: Path, mcp_bin: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     data = _read_json(path)
 
-    payload = {
-        "codebase-memory-mcp": {
-            "enabled": True,
-            "type": "local",
-            "command": [mcp_bin],
-        }
-    }
+    mcp = data.setdefault("mcp", {})
+    if not isinstance(mcp, dict):
+        print(f"  skip {path}: mcp is not an object")
+        return
+    servers = mcp.setdefault("servers", {})
+    if not isinstance(servers, dict):
+        print(f"  skip {path}: mcp.servers is not an object")
+        return
 
     # Only set when absent so a user's existing entry is left alone.
-    data.setdefault("mcp", {}).setdefault(
-        "codebase-memory-mcp", payload["codebase-memory-mcp"]
-    )
+    if "codebase-memory-mcp" in servers:
+        return
 
+    legacy = mcp.get("codebase-memory-mcp")
+    if legacy is not None:
+        # Upgrade the exact V1 payload this tool wrote; anything else is
+        # user-owned and stays as-is (V2 still reads the legacy shape).
+        if not (
+            isinstance(legacy, dict)
+            and legacy.get("enabled") is True
+            and legacy.get("type") == "local"
+            and isinstance(legacy.get("command"), list)
+            and legacy["command"]
+        ):
+            return
+        command = legacy["command"]
+        del mcp["codebase-memory-mcp"]
+    else:
+        command = [mcp_bin]
+
+    servers["codebase-memory-mcp"] = {"type": "local", "command": command}
     path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
     print(f"  merged {path}")
 
@@ -396,9 +414,13 @@ def uninstall_notice(cwd: Path) -> None:
     config_path = root / ".opencode" / "opencode.json"
     if config_path.exists():
         data = json.loads(config_path.read_text(encoding="utf-8") or "{}")
-        has_mcp_entry = (
-            "codebase-memory-mcp" in data.get("mcp", {})
-        )
+        mcp = data.get("mcp", {})
+        if isinstance(mcp, dict):
+            # Both shapes: V1 `mcp.<name>` and V2 `mcp.servers.<name>`.
+            servers = mcp.get("servers", {})
+            has_mcp_entry = "codebase-memory-mcp" in mcp or (
+                isinstance(servers, dict) and "codebase-memory-mcp" in servers
+            )
     has_omp = (
         (root / ".omp" / "extensions" / "CodebaseMemoryReminder.ts").exists()
         or (root / ".omp" / "mcp.json").exists()

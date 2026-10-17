@@ -9,7 +9,7 @@
 #
 # operation:
 #   symlink       — file/dir artifact symlinked into the config dir
-#   config-merge  — config entry merged into a JSON file (opencode.json, tui.json)
+#   config-merge  — config entry merged into a JSON file (opencode.json, cli.json)
 #   text-insert   — text block inserted into a target file (prepend/append)
 
 version = 2
@@ -1026,8 +1026,8 @@ agents = ["opencode"]
 operation = "config-merge"
 type = "theme"
 provenance = "original"
-config_file = "tui.json"
-config_path = "theme"
+config_file = "cli.json"
+config_path = "theme.name"
 value = '"catppuccin-mocha-teal"'
 
 [[artifacts]]

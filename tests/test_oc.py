@@ -99,8 +99,8 @@ def test_install_symlinks_text_and_config(tmp_path, monkeypatch):
     assert "caveman-begin" in text
     assert "file-edit-size-limits:start" in text
 
-    tui = json.loads((cfg / "tui.json").read_text())
-    assert tui["theme"] == "poimandres-turquoise-expanded"
+    cli = json.loads((cfg / "cli.json").read_text())
+    assert cli["theme"]["name"] == "catppuccin-mocha-teal"
     # codebase-memory-mcp is per-project now (see project), not global config.
     assert not (cfg / "opencode.json").exists()
 
@@ -148,6 +148,30 @@ def test_uninstall_notice_reports_project_init(tmp_path, capsys):
     (repo / "AGENTS.md").write_text("<!-- codebase-memory-mcp:start -->\nhi\n")
     (repo / ".opencode" / "plugins").mkdir(parents=True)
     (repo / ".opencode" / "plugins" / "CodebaseMemoryReminder.ts").write_text("x")
+    project.uninstall_notice(repo)
+    assert "codebase-memory-mcp" in capsys.readouterr().out
+
+
+def test_uninstall_notice_reports_v2_mcp_config(tmp_path, capsys):
+    # A V2-native mcp.servers entry alone must trigger the notice too.
+    repo = tmp_path / "proj"
+    repo.mkdir()
+    git("init", cwd=repo)
+    (repo / ".opencode").mkdir()
+    (repo / ".opencode" / "opencode.json").write_text(
+        json.dumps(
+            {
+                "mcp": {
+                    "servers": {
+                        "codebase-memory-mcp": {
+                            "type": "local",
+                            "command": ["/bin/cbm"],
+                        }
+                    }
+                }
+            }
+        )
+    )
     project.uninstall_notice(repo)
     assert "codebase-memory-mcp" in capsys.readouterr().out
 
@@ -782,7 +806,7 @@ def test_validate_accepts_empty_string_config_value():
         "version": 2,
         "artifacts": [{
             "name": "x", "operation": "config-merge", "provenance": "original", "agents": ["opencode"],
-            "config_file": "tui.json", "config_path": "theme", "value": "",
+            "config_file": "cli.json", "config_path": "theme.name", "value": "",
         }],
     }
     manifest.validate(data)  # must not raise
@@ -793,7 +817,7 @@ def test_validate_rejects_non_string_config_value():
         "version": 2,
         "artifacts": [{
             "name": "x", "operation": "config-merge", "provenance": "original", "agents": ["opencode"],
-            "config_file": "tui.json", "config_path": "theme", "value": 123,
+            "config_file": "cli.json", "config_path": "theme.name", "value": 123,
         }],
     }
     with pytest.raises(manifest.ManifestError):
@@ -885,15 +909,49 @@ def test_install_plugin(tmp_path):
     )
 
 
-def test_merge_mcp_config_idempotent_keeps_existing(tmp_path):
+def test_merge_mcp_config_writes_v2_shape(tmp_path):
+    root = tmp_path / "proj"
+    root.mkdir()
+    project._merge_mcp_config(root, "/bin/cbm")
+    data = json.loads((root / ".opencode" / "opencode.json").read_text())
+    assert data["mcp"]["servers"]["codebase-memory-mcp"] == {
+        "type": "local",
+        "command": ["/bin/cbm"],
+    }
+
+
+def test_merge_mcp_config_idempotent(tmp_path):
     root = tmp_path / "proj"
     root.mkdir()
     project._merge_mcp_config(root, "/bin/cbm")
     first = (root / ".opencode" / "opencode.json").read_text()
-    assert json.loads(first)["mcp"]["codebase-memory-mcp"]["command"] == ["/bin/cbm"]
 
     project._merge_mcp_config(root, "/bin/cbm")
     assert (root / ".opencode" / "opencode.json").read_text() == first
+
+
+def test_merge_mcp_config_upgrades_kit_legacy_entry(tmp_path):
+    # The exact V1 payload this tool wrote is upgraded to the V2 shape,
+    # keeping the resolved command.
+    root = tmp_path / "proj"
+    (root / ".opencode").mkdir(parents=True)
+    (root / ".opencode" / "opencode.json").write_text(
+        json.dumps(
+            {
+                "mcp": {
+                    "codebase-memory-mcp": {
+                        "enabled": True,
+                        "type": "local",
+                        "command": ["/old/cbm"],
+                    }
+                }
+            }
+        )
+    )
+    project._merge_mcp_config(root, "/bin/cbm")
+    data = json.loads((root / ".opencode" / "opencode.json").read_text())
+    assert "codebase-memory-mcp" not in data["mcp"]
+    assert data["mcp"]["servers"]["codebase-memory-mcp"]["command"] == ["/old/cbm"]
 
 
 def test_merge_mcp_config_preserves_user_entry(tmp_path):
@@ -905,6 +963,7 @@ def test_merge_mcp_config_preserves_user_entry(tmp_path):
     project._merge_mcp_config(root, "/bin/cbm")
     data = json.loads((root / ".opencode" / "opencode.json").read_text())
     assert data["mcp"]["codebase-memory-mcp"]["command"] == ["/custom"]
+    assert "servers" not in data["mcp"]
 
 
 def test_init_project_skips_outside_repo(tmp_path):
