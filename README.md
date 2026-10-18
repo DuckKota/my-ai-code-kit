@@ -11,15 +11,13 @@ cd my-ai-code-kit
 # OpenSpec and codebase-memory-mcp for that project (prompts first; idempotent).
 ```
 
-OpenCode support requires V2.
-
 > [!important]
 > Manually install the following:
 >
-> - [Ponytail](https://github.com/DietrichGebert/ponytail#readme)
+> - [Ponytail](https://github.com/DietrichGebert/ponytail/blob/main/INSTALL.md)
 > - [Planotator](https://plannotator.ai/)
-> - [Magic Context](https://github.com/cortexkit/magic-context)
-> - [Open Code Review](https://github.com/alibaba/open-code-review/blob/main/plugins/open-code-review/opencode/README.md)
+> - [Magic Context](https://github.com/cortexkit/magic-context#quick-start)
+> - [Open Code Review](https://github.com/alibaba/open-code-review/blob/main/plugins/open-code-review/opencode/README.md) - Prerequisites & Install globally
 
 ## Usage
 
@@ -70,6 +68,10 @@ OpenCode support requires V2.
 </details>
 
 ---
+
+<div align="center">
+    OpenCode support requires V2.
+</div>
 
 <div align="center">
   <img src=".img/oc.png" alt="OpenCode" width="96" height="96"/>&nbsp;&nbsp;&nbsp;
